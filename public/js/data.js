@@ -76,27 +76,68 @@ window.onload = function() {
     };
 
     distanceGraph = new Chart(distanceGraphCanvas).Bar(data, {animationSteps: 15});
-/*
-    setInterval(function(){
-	  // Get a random index point
-	  var distancetobargraph = Math.round(Math.random() * startingData.labels.length);
-	  
-	  // Update one of the points in the second dataset
-	  myLiveChart.datasets[1].points[indexToUpdate].value = Math.random() * 100;
-	  
-	  myLiveChart.update();
-	}, 5000);
-
-	*/
-
  
     socket.on('random', function (data) {
 		//console.log(data);
 		var distancetobargraph = (Math.max(0, Math.round((data/2))-1));
 		//console.log(distancetobargraph);
 		distanceGraph.datasets[0].bars[distancetobargraph].value += 1;
-		console.log(distanceGraph.datasets);
+		//console.log(distanceGraph.datasets);
 		distanceGraph.update();
 	});
 
+    var recentdeathsGraphCanvas = document.getElementById('recentdeathsGraph').getContext('2d');
+		type = 'line',
+    	data = {
+		labels: [ 0],
+		datasets: [{
+		    label: '# of deaths',
+		    data: [1],
+		    backgroundColor: [
+			'rgba(255, 99, 132, 0.2)',
+			'rgba(54, 162, 235, 0.2)',
+			'rgba(255, 206, 86, 0.2)',
+			'rgba(75, 192, 192, 0.2)',
+			'rgba(153, 102, 255, 0.2)',
+			'rgba(255, 159, 64, 0.2)'
+		    ],
+		    borderColor: [
+			'rgba(255,99,132,1)',
+			'rgba(54, 162, 235, 1)',
+			'rgba(255, 206, 86, 1)',
+			'rgba(75, 192, 192, 1)',
+			'rgba(153, 102, 255, 1)',
+			'rgba(255, 159, 64, 1)'
+		    ],
+		    borderWidth: 1
+		}]
+	    },
+	    options = {
+		scales: {
+		    yAxes: [{
+			ticks: {
+			    beginAtZero:true
+			}
+		    }]
+		}
+	    };
+	
+	recentdeathsGraph = new Chart(recentdeathsGraphCanvas).Line(data, {animationSteps:15});
+
+	var timepassedfordeaths = 0;
+
+	socket.on('random', function (data) {
+//		console.log(data)
+		timepassedfordeaths += 1;
+		recentdeathsGraph.addData([data], timepassedfordeaths);
+		console.log(recentdeathsGraph.datasets[0].points.length);
+		if (recentdeathsGraph.datasets[0].points.length == 6)
+		{
+		recentdeathsGraph.removeData();
+		}
+		else
+		{
+
+		}
+	});
 }
