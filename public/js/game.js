@@ -21,7 +21,7 @@ function setMovement(player) {
 
 	// Player collisions
 	player.body.collideWorldBounds = true;
-	player.body.bounce = 0.5;
+	player.body.bounce.set(0.5);
 
 	// Gyro controls
 	gyro.frequency = 10;
