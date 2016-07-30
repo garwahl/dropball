@@ -14,6 +14,16 @@ app.get('/', function(req, res){
 var sockets = [];
 var currentSum = 0;
 var players = {};
+var gameState = "wait";
+var currentTimer = 0;
+
+var alivePlayers = 0;
+
+var deathZones = [];
+
+// Constants
+var PLAYER_SIZE = 75;
+var TILE_SIZE = 200;
 
 setInterval(function() {
 	currentSum = currentSum + 1;
@@ -21,6 +31,44 @@ setInterval(function() {
 		socket.emit('random', Math.random() * 10);
 		socket.emit('add', currentSum);
 	});	
+}, 1000);
+
+setInterval(function() {
+	console.log(gameState + ": " + currentTimer);
+	currentTimer = currentTimer + 1;
+	if (gameState == "wait") {
+		if (currentTimer >= 10) {
+			currentTimer = -1;
+			gameState = "play";
+			alivePlayers = players.length;
+		}
+	}
+	else if (gameState == "play") {
+		if (alivePlayers <= 0) {
+			gameState = "wait";
+			currentTimer = 0;	
+		}
+		else if (currentTimer == 0) {
+			dangerZones = GetDangerZones(4,3);
+			io.emit('getDanger', dangerZones); 
+			io.emit('flash', 'red');
+		}
+		else if (currentTimer >= 4) {
+			io.emit('flash', 'green');
+			var dead = DeathZoneCalculation(dangerZones);
+			io.emit('playerDeaths', dead);
+			currentTimer = 0;
+			alivePlayers -= dead.length;
+		}
+		else {
+			var colours = ['black', 'red'];
+			for (i = 1; i < 3; i++) {
+				if (currentTimer == i) {
+					io.emit('flash', colours[i%2]);	
+				}
+			}
+		}
+	}
 }, 1000);
 
 setInterval(function() {
@@ -53,6 +101,8 @@ function GetDangerZones(width, height) {
 	for (i = 0; i < Math.random() * 10 + 1; i++) {
 		tmp.push([Math.floor(Math.random() * width), Math.floor(Math.random() * height)]);
 	}
+	
+	console.log(tmp);	
 
 	return tmp;
 }
@@ -69,8 +119,8 @@ function GetCorners(x, y, size) {
 }
 
 function IsInTile(x, y, charX, charY) {
-	var charCorners = GetCorners(charX, charY, 75);
-	var wallCorners = GetCorners(x, y, 200);
+	var charCorners = GetCorners(charX, charY, PLAYER_SIZE);
+	var wallCorners = GetCorners(x, y, TILE_SIZE);
 	charCorners.forEach(function(corner) {
 		if (corner[0] > wallCorners[0][0] &&
 			corner[0] < wallCorners[1][0] &&
@@ -90,7 +140,7 @@ function DeathZoneCalculation(tiles) {
 		for (i = 0; i < ids.length; i++) {
 			var currentPlayer = players[ids[i]];
 
-			if (IsInTile(tileX, tileY, currentPlayer.x, currentPlayer.y)) {
+			if (IsInTile(tile.x, tile.y, currentPlayer.x, currentPlayer.y)) {
 				deadPlayers.push(currentPlayer);
 			}
 		}
@@ -105,8 +155,6 @@ io.on('connection', function(socket) {
 	CreateNewPlayer(socket.id);
 	socket.emit('registerSelf', socket.id);
 	console.log('emitted');
-
-	io.emit('getDanger', GetDangerZones(4,3));
 
 	var ids = GetAllPlayerIDs()
 

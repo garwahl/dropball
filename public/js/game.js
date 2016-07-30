@@ -151,9 +151,9 @@ function flashSkulls(color) {
 	var skulls = game.add.group();
 	var skull;
 	// Iterate through each coordinate that will be a danger zone
-	for (var i = 0; i < zones.length; i++) {
-		col = zones[i][0]; //x
-		row = zones[i][1]; //y
+	for (var i = 0; i < skullcords.length; i++) {
+		col = skullcords[i][0]; //x
+		row = skullcords[i][1]; //y
 		// Go through white tiles, changing target tile to danger zone
 		for (var j = 0; j < 6; j++) {
 			for (var k = 0; k < 6; k++) {
