@@ -4,8 +4,40 @@ window.onload = function() {
 	socket = io();
 	console.log(socket);
 
+	var distanceGraphCanvas = document.getElementById("distanceGraph");
+	var distanceGraph = new Chart(distanceGraphCanvas, {
+	    type = 'bar',
+    	data = {
+		labels: ["<2m", "2-4m", "4-6m", "6-8m", ">8m"],
+		datasets: [{
+			label: "Total Distance Travelled",
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+            ],
+            borderWidth: 1,
+            data: [0, 0, 0, 0, 0],
+        }]
+    }
+	};
+	socket.on('random', function (data) {
+		var distancetobargraph = (Math.max(0, Math.round((data/2))-1));
+		distanceGraph.datasets[0].bars[distancetobargraph].value += 1;
+		//console.log(distanceGraph.datasets);
+		distanceGraph.update();
+	});
 	//Distance travelled 
-	var distanceGraphCanvas = document.getElementById('distanceGraph');
+	/*var distanceGraphCanvas = document.getElementById("distanceGraph");
 	var distanceGraph = new Chart(distanceGraphCanvas, {
 		type = 'bar',
     	data = {
@@ -135,6 +167,7 @@ window.onload = function() {
 		teamcompGraph.datasets[0].bars[distancetobargraph].value += 1;
 		//console.log(distanceGraph.datasets);
 		distanceGraph.update();
-		*/
+		
 	});
+	*/
 }
