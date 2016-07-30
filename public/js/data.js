@@ -29,7 +29,7 @@ window.onload = function() {
 	                'rgba(153, 102, 255, 1)',
 	                'rgba(54, 162, 235, 1)'
 	            ],
-	            borderWidth: 1
+	            borderWidth: 1,
 	        }]
 	    },
 	    options: {
