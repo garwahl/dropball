@@ -18,7 +18,7 @@ var gameState = "wait";
 var currentTimer = 0;
 
 var alivePlayers = 0;
-var deadPlayers
+var previousPositions = {};
 
 var deathZones = [];
 var dangerZones = [];
@@ -27,16 +27,40 @@ var dangerZones = [];
 var PLAYER_SIZE = 75;
 var TILE_SIZE = 200;
 
+function EuclidianDistance(x1, x2, y1, y2) {
+	var distance = Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2);
+	distance = Math.sqrt(distance);
+
+	return distance;
+}
+
 setInterval(function() {
 	currentSum = currentSum + 1;
 	sockets.forEach(function(socket) {
 		socket.emit('random', Math.random() * 10);
 		socket.emit('add', currentSum);
 	});	
+
+	var distances = [];
+
+	Object.keys(players).forEach(function(id) {
+		if (previousPositions[id] != null) {
+			var distance = EuclidianDistance(
+				previousPositions[id].x,
+				players[id].x,
+				previousPositions[id].y,
+				players[id].y);
+			distances.push([id, distance]);
+		}
+		previousPositions[id] = [players[id].x, players[id].y];
+
+	});
+
+	io.emit('distanceTravelled', distances);
+
 }, 1000);
 
 setInterval(function() {
-	console.log(alivePlayers);
 	console.log(gameState + ": " + currentTimer);
 	currentTimer = currentTimer + 1;
 	if (gameState == "wait") {
@@ -63,6 +87,8 @@ setInterval(function() {
 			io.emit('playerDeaths', dead);
 			currentTimer = -1;
 			alivePlayers -= dead.length;
+
+			io.emit('deathsInLastSec', dead.length);
 		}
 		else {
 			var colours = ['yellow', 'black'];
@@ -151,7 +177,6 @@ function IsInTile(x, y, charX, charY) {
 function DeathZoneCalculation(tiles) {
 	var deadPlayers = [];	
 	var ids = GetAllPlayerIDs();
-	console.log(players);
 
 	tiles.forEach(function(tile) {
 		for (i = 0; i < ids.length; i++) {
