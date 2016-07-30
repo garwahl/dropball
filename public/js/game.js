@@ -20,8 +20,7 @@ function setMovement(player) {
 
 // Change the game into fullscreen
 function fullScreen() {
-	game.stage.scale.startFullScreen();
-	Phaser.StageScaleMode.EXACT_FIT = 0;
+	game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 }
 
 // #############
