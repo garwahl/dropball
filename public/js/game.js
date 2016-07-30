@@ -151,6 +151,7 @@ function changeDangerTiles(zones) {
 	// Clear skulls sprite group
 	if (skulls.length > 0) {
 		skulls.forEach(function(item) {
+			item.text = "";
 			skulls.remove(item);
 		})
 	}
@@ -176,14 +177,11 @@ function changeDangerTiles(zones) {
 function flashSkulls(color) {
 	game.world.bringToTop(skulls);
 	skulls.forEach(function(item) {
-		if (color == "red") {
+		if (color == "0") {
 			item.tint = 0xff0000;
 		}
-		else if (color == "yellow") {
-			item.tint = 0xffff00;
-		}
-		else if (color == "black") 
-			item.tint = 0x000000;
+		else
+			item.text = color;
 	})
 }
 
