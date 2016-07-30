@@ -14,7 +14,7 @@ app.get('/', function(req, res){
 var sockets = [];
 
 setInterval(function() {
-	sockets.forEach(function(item) {
+	sockets.forEach(function(socket) {
 		socket.emit('random', Math.random() * 10);
 	});	
 }, 1000);
