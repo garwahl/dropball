@@ -213,7 +213,7 @@ function preload() {
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('kappa', 'img/kappa.png');
 	game.load.image('bible', 'img/biblethump.jpg');
-	game.load.image('trump' 'img/trump.png');
+	game.load.image('trump', 'img/trump.png');
 
 	// Game Assets
 	game.load.image('tile', 'img/whitetile.png');
