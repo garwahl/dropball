@@ -20,13 +20,13 @@ function setMovement(player) {
 	game.physics.enable(player, Phaser.Physics.Arcade);
 	// Player collisions
 	player.body.collideWorldBounds = true;
-	player.body.bounce = 0.1;
+	player.body.bounce = 0.5;
 
 	// Gyro controls
-	gyro.frequency = 5
+	gyro.frequency = 10;
 	gyro.startTracking(function(entity) {
-		player.body.velocity.x += entity.gamma;
-		player.body.velocity.y += entity.alpha;
+		player.body.velocity.x += entity.gamma/30;
+		player.body.velocity.y += entity.alpha/30;
 	});
 
 }
