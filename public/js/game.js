@@ -17,8 +17,8 @@ function createPlayer(sprite) {
 // Set the movement of each individual player variable passed as args
 function setMovement(player) {
 	game.physics.arcade.enable(player);
-	game.physics.enable(player, Phaser.Physics.Arcade);
 	
+
 	// Player collisions
 	player.body.collideWorldBounds = true;
 	player.body.bounce = 0.5;
