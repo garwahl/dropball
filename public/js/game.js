@@ -6,6 +6,8 @@ var socket = io();
 var tickRate = 1000/30; //Tickrate is 3 milliseconds
 
 var players = [];
+// My own character
+var me; 
 
 
 // ############
@@ -13,21 +15,41 @@ var players = [];
 // ############
 
 // Create a new instance of the player at x,y coordinates using sprite player
-function createPlayer(sprite) {
+function createPlayer(id,sprite) {
 	var newPlayer = {
-		id: 0,
+		id: id,
 		sprite: game.add.sprite(150, 150, sprite)
 	};
 
 	newPlayer.sprite.anchor.setTo(0.5);
 
+	players.push(newPlayer);
+
 	return newPlayer;
 }
 
-// Set up a new connection as a new player
-function setUpConnection() {
-
+// Set up all connections 
+var setUpConnections = function() {
+	socket.on('registerSelf', registerSelf);
+	socket.on('newPlayer',registerPlayers);
 }
+
+// Set up a your own character
+function registerSelf(id) {
+	me = createPlayer(id, 'kirby');
+	setMovement(me.sprite);
+}
+
+// Set up everyone elses character 
+function registerPlayers(id) {
+	for (i = 0; i < id.length; i++) {
+		if (id[i] != me.id) {
+			var player = createPlayer(id[i], 'kirby');
+			setMovement(player.sprite);
+		}
+	}
+}
+
 
 // Set the movement of each individual player variable passed as args
 function setMovement(player) {
@@ -70,12 +92,9 @@ function create() {
 	//Arcade Physics System
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 
-	// Test movement
-	var kirby = createPlayer('kirby');
-	setMovement(kirby.sprite);
-
+	setUpConnections();
 	// Send player position back to server
-	setInterval(function() {sendPosition(kirby.sprite.position.x, kirby.position.y)},tickRate);
+	setInterval(function() {sendPosition(me.sprite.position.x, me.position.y)},tickRate);
 }
 
 function update() {
