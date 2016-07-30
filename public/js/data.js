@@ -71,11 +71,11 @@ window.onload = function() {
                 'rgba(255, 159, 64, 1)'
             ],
             borderWidth: 1,
-            data: [1, 1, 1, 1, 1, 1, 1],
+            data: [0, 0, 0, 0, 0],
         }]
     };
 
-    distanceGraph = new Chart(distanceGraphCanvas).Line(data, {animationSteps: 15});
+    distanceGraph = new Chart(distanceGraphCanvas).Bar(data, {animationSteps: 15});
 /*
     setInterval(function(){
 	  // Get a random index point
@@ -91,10 +91,11 @@ window.onload = function() {
 
  
     socket.on('random', function (data) {
-		console.log(data);
-		var distancetobargraph = (Math.round((data/2)-1));
+		//console.log(data);
+		var distancetobargraph = (Math.max(0, Math.round((data/2))-1));
 		//console.log(distancetobargraph);
-		distanceGraph.datasets[0].points[0].value = 2;
+		distanceGraph.datasets[0].bars[distancetobargraph].value += 1;
+		console.log(distanceGraph.datasets);
 		distanceGraph.update();
 	});
 
