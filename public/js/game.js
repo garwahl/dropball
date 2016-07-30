@@ -175,11 +175,10 @@ function flashSkulls(color) {
 // ##########################
 
 function preload() {
-	game.load.image('black', 'img/black.png');
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('tile', 'img/whitetile.png');
-	game.load.image('redskull', 'img/redskull.png');
 	game.load.image('skull', 'img/skull.png');
+	game.load.image('altskull', 'img/altskull.png');
 }
 
 function create() {
