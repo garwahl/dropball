@@ -135,9 +135,6 @@ function IsInTile(x, y, charX, charY) {
 	var isIn = false;
 
 	charCorners.forEach(function(corner) {
-		console.log('---');
-		console.log(corner);
-		console.log(wallCorners);
 		if (corner[0] >= wallCorners[0][0] &&
 			corner[0] <= wallCorners[1][0] &&
 			corner[1] >= wallCorners[0][1] &&
@@ -160,7 +157,6 @@ function DeathZoneCalculation(tiles) {
 			// console.log(currentPlayer);
 
 			if (IsInTile(tile[0], tile[1], currentPlayer.x, currentPlayer.y) == true) {
-				console.log("TRUE");
 				deadPlayers.push([currentPlayer]);
 			}
 		}
