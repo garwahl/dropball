@@ -50,7 +50,7 @@ function GetAllPlayerIDs() {
 function GetDangerZones(width, height) {
 	var tmp = [];
 
-	for (i = 0; i < Math.random() * 4; i++) {
+	for (i = 0; i < Math.random() * 10 + 1; i++) {
 		tmp.push([Math.floor(Math.random() * width), Math.floor(Math.random() * height)]);
 	}
 
