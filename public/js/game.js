@@ -121,7 +121,7 @@ function disconnectPlayer(id) {
 
 // Change the game into fullscreen
 function fullScreen() {
-	game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 }
 
 // ##########################
