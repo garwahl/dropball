@@ -47,6 +47,16 @@ function GetAllPlayerIDs() {
 	return keys;
 }
 
+function GetDangerZones(width, height) {
+	var tmp = [];
+
+	for (i = 0; i < Math.random() * 4; i++) {
+		tmp.push([Math.floor(Math.random() * width), Math.floor(Math.random() * height)]);
+	}
+
+	return tmp;
+}
+
 function GetCorners(x, y, size) {
 	var corners = [
 		[x, y],
@@ -68,9 +78,16 @@ function IsInTile(x, y, charX, charY) {
 			corner[1] < wallCorners[2][1]) {
 			return true;
 		}
-	}
+	});
 
 	return false;
+}
+
+function DeathZoneCalculation(tileX, tileY, size) {
+	var ids = GetAllPlayerIDs();
+	for (i = 0; i < ids.length; i++) {
+	
+	}
 }
 
 io.on('connection', function(socket) {
@@ -78,6 +95,8 @@ io.on('connection', function(socket) {
 	sockets.push(socket);
 	CreateNewPlayer(socket.id);
 	socket.emit('registerSelf', socket.id);
+
+	io.emit('getDanger', GetDangerZones(4,3));
 
 	var ids = GetAllPlayerIDs()
 
