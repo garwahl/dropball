@@ -54,7 +54,7 @@ setInterval(function() {
 			io.emit('flash', 'red');
 		}
 		else if (currentTimer >= 4) {
-			io.emit('flash', 'green');
+			io.emit('flash', 'black');
 			var dead = DeathZoneCalculation(dangerZones);
 			io.emit('playerDeaths', dead);
 			currentTimer = 0;
