@@ -6,7 +6,7 @@ window.onload = function() {
 
 	//Distance travelled 
 	var distanceGraphCanvas = document.getElementById('distanceGraph');
-	var distanceGraph = new Chart(distanceGraphCanvas).Bar(data, {animationSteps: 15});
+	var distanceGraph = new Chart(distanceGraphCanvas, {
 		type = 'bar',
     	data = {
 		labels: ["<2m", "2-4m", "4-6m", "6-8m", ">8m"],
@@ -29,7 +29,8 @@ window.onload = function() {
             borderWidth: 1,
             data: [0, 0, 0, 0, 0],
         }]
-    };
+    }
+	};
 
     
 
