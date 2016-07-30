@@ -165,6 +165,7 @@ function changeDangerTiles(zones) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
 					skull = skulls.create(k*200,j*200,'whiteskull');
+					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "50px Arial"});
 					break;
 				}
 			}
@@ -173,15 +174,16 @@ function changeDangerTiles(zones) {
 }
 // Change skull color 
 function flashSkulls(color) {
-	var col,row;
 	game.world.bringToTop(skulls);
 	skulls.forEach(function(item) {
-		if (color == "yellow")
+		if (color == "red") {
+			item.tint = 0xff0000;
+		}
+		else if (color == "yellow") {
 			item.tint = 0xffff00;
+		}
 		else if (color == "black") 
 			item.tint = 0x000000;
-		else if (color == "red")
-			item.tint == 0xff0000;
 	})
 }
 
