@@ -47,7 +47,7 @@ io.on('connection', function(socket) {
 	socket.on('updatePosition', function(position) {
 		players[socket.id].x = position[0];
 		players[socket.id].y = position[1];
-	}
+	});
 
 	socket.on('disconnect', function(data) {
 		console.log("Disconnection: " + socket.id);
