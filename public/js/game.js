@@ -3,7 +3,7 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var socket = io();
-var tickRate = 300; //Tickrate is 3 milliseconds
+var tickRate = 1000/30; //Tickrate is 3 milliseconds
 
 
 // ############
@@ -41,9 +41,6 @@ function setMovement(player) {
 // Send position of the player back to server
 function sendPosition(x, y) {
 	socket.emit('updatePosition', [x,y]);
-	console.log(x);
-	console.log(y);
-
 }
 
 // Change the game into fullscreen
@@ -68,7 +65,7 @@ function create() {
 	setMovement(kirby);
 
 	// Send player position back to server
-	setInterval(sendPosition(player.position.x, player.position.y),tickRate);
+	setInterval(function() {sendPosition(kirby.position.x, kirby.position.y)},tickRate);
 }
 
 function update() {
