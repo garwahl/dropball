@@ -1,5 +1,10 @@
+
 // Clientside scripts
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var socket = io();
+var tickRate = 300; //Tickrate is 3 milliseconds
+
 
 // ############
 // # Functions#
@@ -22,13 +27,22 @@ function setMovement(player) {
 	// Player collisions
 	player.body.collideWorldBounds = true;
 	player.body.bounce.set(0.5);
+	player.body.maxVelocity.set(250);
 
 	// Gyro controls
 	gyro.frequency = 10;
 	gyro.startTracking(function(entity) {
-		player.body.velocity.x += entity.gamma/20;
-		player.body.velocity.y += entity.beta/20;
+		player.body.velocity.x += entity.gamma/2;
+		player.body.velocity.y += entity.beta/2;
 	});
+
+}
+
+// Send position of the player back to server
+function sendPosition(x, y) {
+	socket.emit('updatePosition', [x,y]);
+	console.log(x);
+	console.log(y);
 
 }
 
@@ -37,7 +51,7 @@ function fullScreen() {
 	game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
 }
 
-// #############
+// ##########################
 
 function preload() {
 	game.load.image('black', 'img/black.png');
@@ -55,4 +69,6 @@ function create() {
 }
 
 function update() {
+	// // Send player position back to server
+	// setInterval(sendPosition(player.x, player.y),tickRate);
 }
