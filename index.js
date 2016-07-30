@@ -4,9 +4,10 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+app.use(express.static('public'));
 
 app.get('/', function(req, res){
-	res.send('<h1>Hello world</h1>');
+	res.sendFile(__dirname + "/index.html");
 });
 
 http.listen(3000, function(){
