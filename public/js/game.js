@@ -24,6 +24,7 @@ function fullScreen() {
 // #############
 
 function preload() {
+	game.load.image('black', 'img/black.png');
 }
 
 function create() {
