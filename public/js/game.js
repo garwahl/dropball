@@ -9,7 +9,10 @@ var players = [];
 // My own character
 var me; 
 
+// Coords of sprites
 var skullcords = [];
+// Group of skull sprites
+var skulls;
 
 // ############
 // # Functions#
@@ -30,18 +33,19 @@ function createPlayer(id,sprite) {
 }
 
 // Set up all connections 
-var setUpConnections = function() {
+function setUpConnections() {
 	socket.on('registerSelf', registerSelf);
 	socket.on('newPlayer',registerPlayers);
 	socket.on('disconnectPlayer',disconnectPlayer); 
 	socket.on('getDanger',changeDangerTiles);
 	socket.on('flash',flashSkulls); 
+
+	socket.on('killInnocents', murder);
 }
 
 // Set up a your own character
 function registerSelf(id) {
-	me = createPlayer(id, 'kirby');
-	setMovementSelf(me.sprite);
+	me.id = id;
 }
 
 // Set up everyone elses character 
@@ -53,7 +57,6 @@ function registerPlayers(id) {
 		}
 	}
 }
-
 
 // Set the movement of each individual player without gyro
 function setMovement(player) {
@@ -133,8 +136,8 @@ function fullScreen() {
 function createTiles() {
 	var tiles = game.add.group();
 	var tile;
-	for (var i = 0; i < 7; i ++) {
-		for (var j = 0; j < 7; j++) {
+	for (var i = 0; i < 4; i ++) {
+		for (var j = 0; j < 3; j++) {
 			tile = tiles.create(i*200,j*200,'tile');
 		}
 	}
@@ -144,11 +147,13 @@ function createTiles() {
 function changeDangerTiles(zones) {
 	skullcords = [];
 	skullcords = zones; 
-}
-// Change skull color 
-function flashSkulls(color) {
-	var col,row;
-	var skulls = game.add.group();
+
+	// Clear skulls sprite group
+	if (skulls.length > 0) {
+		skulls.forEach(function(item) {
+			skulls.remove(item);
+		})
+	}
 	var skull;
 	// Iterate through each coordinate that will be a danger zone
 	for (var i = 0; i < skullcords.length; i++) {
@@ -159,14 +164,34 @@ function flashSkulls(color) {
 			for (var k = 0; k < 6; k++) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
-					if (color == "red")
-						skull = skulls.create(k*200,j*200,'redskull');
-					else if (color == "black") {
-						skull = create(k*200,j*200,'skull');
-					}
+					skull = skulls.create(k*200,j*200,'whiteskull');
 					break;
 				}
 			}
+		}
+	}
+}
+// Change skull color 
+function flashSkulls(color) {
+	var col,row;
+	game.world.bringToTop(skulls);
+	skulls.forEach(function(item) {
+		if (color == "yellow")
+			item.tint = 0xffff00;
+		else if (color == "black") 
+			item.tint = 0x000000;
+		else if (color == "red")
+			item.tint == 0xff0000;
+	})
+}
+
+// Kill players
+function murder(people) {
+	for (i = 0; i < people.length; i++) {
+		for (j = 0; j < players.length; j++) {
+			// Target acquired..
+			if (players[j].id == people[i])
+				players[j].sprite.kill();
 		}
 	}
 }
@@ -179,6 +204,7 @@ function preload() {
 	game.load.image('tile', 'img/whitetile.png');
 	game.load.image('skull', 'img/skull.png');
 	game.load.image('altskull', 'img/altskull.png');
+	game.load.image('whiteskull', 'img/whiteskull.png');
 }
 
 function create() {
@@ -186,9 +212,11 @@ function create() {
 	//Arcade Physics System
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 
+	skulls = game.add.group();
 	// Set up game tiles
 	createTiles();
-
+	me = createPlayer(0, 'kirby');
+	setMovementSelf(me.sprite);
 	// Set up connections as either me or everyone else
 	setUpConnections();
 	// Update Player Positions

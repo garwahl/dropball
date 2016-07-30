@@ -51,20 +51,23 @@ setInterval(function() {
 		else if (currentTimer == 0) {
 			dangerZones = GetDangerZones(4,3);
 			io.emit('getDanger', dangerZones); 
-			io.emit('flash', 'red');
+			io.emit('flash', 'yellow');
 		}
-		else if (currentTimer >= 4) {
-			io.emit('flash', 'green');
+		else if (currentTimer >= 3) {
+			io.emit('flash', 'red');
 			var dead = DeathZoneCalculation(dangerZones);
 			io.emit('playerDeaths', dead);
-			currentTimer = 0;
+			currentTimer = -1;
 			alivePlayers -= dead.length;
 		}
 		else {
-			var colours = ['black', 'red'];
+			var colours = ['yellow', 'black'];
 			for (i = 1; i < 3; i++) {
 				if (currentTimer == i) {
-					io.emit('flash', colours[i%2]);	
+					if (i%2 == 0)
+						io.emit('flash', colours[0]);
+					else 
+						io.emit('flash', colours[1]);
 				}
 			}
 		}
