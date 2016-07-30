@@ -5,6 +5,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 var socket = io();
 var tickRate = 1000/30; //Tickrate is 3 milliseconds
 
+var players = [];
+
 
 // ############
 // # Functions#
@@ -12,11 +14,19 @@ var tickRate = 1000/30; //Tickrate is 3 milliseconds
 
 // Create a new instance of the player at x,y coordinates using sprite player
 function createPlayer(sprite) {
-	var newPlayer;
-	newPlayer = game.add.sprite(150, 150, sprite);
-	newPlayer.anchor.setTo(0.5);
+	var newPlayer = {
+		id: 0,
+		sprite: game.add.sprite(150, 150, sprite)
+	};
+
+	newPlayer.sprite.anchor.setTo(0.5);
 
 	return newPlayer;
+}
+
+// Set up a new connection as a new player
+function setUpConnection() {
+
 }
 
 // Set the movement of each individual player variable passed as args
@@ -62,10 +72,10 @@ function create() {
 
 	// Test movement
 	var kirby = createPlayer('kirby');
-	setMovement(kirby);
+	setMovement(kirby.sprite);
 
 	// Send player position back to server
-	setInterval(function() {sendPosition(kirby.position.x, kirby.position.y)},tickRate);
+	setInterval(function() {sendPosition(kirby.sprite.position.x, kirby.position.y)},tickRate);
 }
 
 function update() {
