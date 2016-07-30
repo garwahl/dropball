@@ -110,8 +110,8 @@ window.onload = function() {
 	});
 
 
-    socket.on('distanceTravelled', function (data[1]) {
-		var distancetobargraph = (Math.max(0, Math.round((data/2))-1));
+    socket.on('distanceTravelled', function (data) {
+		var distancetobargraph = (Math.max(0, Math.round((data[1]/2))-1));
 			//distanceGraph.data.datasets[0].data.splice(0,1);
 
 		distanceGraph.data.datasets[0].data[distancetobargraph] += 1;
