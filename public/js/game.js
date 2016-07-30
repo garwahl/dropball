@@ -14,6 +14,8 @@ var skullcords = [];
 // Group of skull sprites
 var skulls;
 
+var countDown = game.add.text(0.5,0.5,"",{font: 50px Arial});
+
 // ############
 // # Functions#
 // ############
@@ -41,6 +43,8 @@ function setUpConnections() {
 	socket.on('flash',flashSkulls); 
 
 	socket.on('playerDeaths', murder);
+
+	socket.on('startTime', displayCountDown);
 
 }
 
@@ -203,6 +207,27 @@ function murder(people) { //array of objs
 				players[j].sprite.kill();
 		}
 	}
+}
+
+// Display the waiting time until the game starts
+function displayCountDown(seconds) {
+	// Revive dead players
+	if (seconds == 9) {
+		for (i = 0; i < players.length; i++) {
+			if (players[i].alive == false)
+				players[i].revive();
+		}
+	}
+	// Remove skulls from map
+	if (skulls.length > 0) {
+		skulls.forEach(function(item) {
+			item.text = "";
+			skulls.remove(item);
+		})
+	}
+	// Decrement Timer
+	countDown.text = String(seconds);
+	countDown.visible = false;
 }
 
 
