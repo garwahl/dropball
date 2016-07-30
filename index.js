@@ -172,12 +172,15 @@ io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
 	sockets.push(socket);
 	CreateNewPlayer(socket.id);
-	socket.emit('registerSelf', socket.id);
 
-	var ids = GetAllPlayerIDs()
 
-	socket.emit('newPlayer', ids);
-	socket.broadcast.emit('newPlayer', [socket.id]);
+	socket.on('requestInformation', function(data) {
+		var ids = GetAllPlayerIDs()
+
+		socket.emit('newPlayer', ids);
+		socket.emit('registerSelf', socket.id);
+		socket.broadcast.emit('newPlayer', [socket.id]);
+	});
 
 	socket.on('updateVelocity', function(velocity) {
 		players[socket.id].xVelocity = velocity[0];
