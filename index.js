@@ -65,7 +65,7 @@ setInterval(function() {
 			var colours = ['yellow', 'black'];
 			for (i = 1; i < 3; i++) {
 				if (currentTimer == i) {
-					io.emit('flash', str(3-i));
+					io.emit('flash', String(3-i));
 				}
 			}
 		}
