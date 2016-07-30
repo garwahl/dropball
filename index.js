@@ -13,6 +13,7 @@ app.get('/', function(req, res){
 // Variables
 var sockets = [];
 var currentSum = 0;
+var players = {};
 
 setInterval(function() {
 	currentSum = currentSum + 1;
@@ -22,13 +23,44 @@ setInterval(function() {
 	});	
 }, 1000);
 
+setInterval(function() {
+	var allPlayers = [];
+	Object.keys(players).forEach(function(key) {
+		allPlayers.push(players[key]);
+	});
+	io.emit("playerPositions", allPlayers);
+
+}, 1000/30);
+
+function CreateNewPlayer(socketID) {
+	players[socketID] = new Object();
+	players[socketID].id = socketID;
+	players[socketID].x = 0;
+	players[socketID].y = 0;
+}
+
 io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
-	sockets.push(socket);	
-	socket.emit('random', 99);	
+	sockets.push(socket);
+	CreateNewPlayer(socket.id);
+	socket.emit('	
+
+	socket.on('updatePosition', function(position) {
+		players[socket.id].x = position[0];
+		players[socket.id].y = position[1];
+	}
 
 	socket.on('disconnect', function(data) {
 		console.log("Disconnection: " + socket.id);
+		for (i = 0; i < sockets.length; i++) {
+			console.log(sockets[i].id);
+			if (sockets[i].id == socket.id) {
+				sockets.splice(i, 1);
+				break;
+			}
+		}
+
+		delete players[socket.id];
 	});
 	
 });
