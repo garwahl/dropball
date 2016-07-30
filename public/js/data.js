@@ -42,6 +42,34 @@ window.onload = function() {
 	// 	playerranking += 1;
 	// });
 
+	// Location of death
+	var deathlocGraphCanvas = document.getElementById("deathlocGraph")
+	var deathlocGraph = new Chart(deathlocGraphCanvas,{
+		type: 'bubble',
+		data: {
+	    datasets: [
+	        {
+	            label: 'First Dataset',
+	            data: [
+	                {
+	                    x: 2,
+	                    y: 1.5,
+	                    r: 0,
+	                }
+	            ],
+	            backgroundColor:"#FF6384",
+	            hoverBackgroundColor: "#FF6384",
+	        }]
+		},
+		options: {
+	        elements: {
+	            points: {
+	                borderWidth: 1,
+	                borderColor: 'rgb(0, 0, 0)'
+	            }
+	        }
+	    }
+	});
 	// Distance Travelled Graph
 	var distanceGraphCanvas = document.getElementById("distanceGraph");
 	var distanceGraph = new Chart(distanceGraphCanvas, {
@@ -82,7 +110,7 @@ window.onload = function() {
 	});
 
 
-    socket.on('random', function (data) {
+    socket.on('distanceTravelled', function (data[1]) {
 		var distancetobargraph = (Math.max(0, Math.round((data/2))-1));
 			//distanceGraph.data.datasets[0].data.splice(0,1);
 
