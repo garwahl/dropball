@@ -12,17 +12,21 @@ app.get('/', function(req, res){
 
 // Variables
 var sockets = [];
+var currentSum = 0;
 
 setInterval(function() {
+	currentSum = currentSum + 1;
 	sockets.forEach(function(socket) {
 		socket.emit('random', Math.random() * 10);
+		socket.emit('add', currentSum);
 	});	
 }, 1000);
 
 io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
 	sockets.push(socket);	
-	
+	socket.emit('random', 99);	
+
 	socket.on('disconnect', function(data) {
 		console.log("Disconnection: " + socket.id);
 	});
