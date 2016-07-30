@@ -139,8 +139,24 @@ function createTiles() {
 }
 
 // Change Tiles to Danger Tiles
-function changeDangerTiles(col,row) {
-	
+function changeDangerTiles(zones) {
+	var col,row;
+	// Iterate through each coordinate that will be a danger zone
+	for (var i = 0; i < zones.length; i++) {
+		col = zones[i][0]; //x
+		row = zones[i][1]; //y
+		// Go through white tiles, changing target tile to danger zone
+		for (var j = 0; j < 6; j++) {
+			for (var k = 0; k < 6; k++) {
+				if (col == k && row == j) {
+					// Change sprite to danger zone
+					game.add.sprite(j*200,k*200,'red');
+					game.add.sprite(j*100,k*50,'skull');
+					break;
+				}
+			}
+		}
+	}
 }
 
 // ##########################
@@ -149,6 +165,7 @@ function preload() {
 	game.load.image('black', 'img/black.png');
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('tile', 'img/whitetile.png');
+	game.load.image('red','img/red.jpg');
 	game.load.image('skull', 'img/skull.png');
 }
 
@@ -166,6 +183,7 @@ function create() {
 	checkPositions();
 	// Send player position back to server
 	setInterval(function() {sendPosition(me.sprite.position.x, me.sprite.position.y)},tickRate);
+
 }
 
 function update() {
