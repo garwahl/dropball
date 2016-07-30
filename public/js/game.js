@@ -9,7 +9,8 @@ var players = [];
 var playerCount = 0;
 // My own character
 var me; 
-var avatars = ['pepe','trump','bible','kirby','kappa'];
+// var avatars = ['pepe','trump','bible','kirby','kappa'];
+var avatars = ['trump', 'bible', 'kirby', 'kappa'];
 
 // Coords of sprites
 var skullcords = [];
@@ -180,7 +181,9 @@ function changeDangerTiles(zones) {
 					// Change sprite to danger zone
 					skull = skulls.create(k*200,j*200,'whiteskull');
 					skull.visible = false;
-					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "bold 70px Arial"});
+					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "bold 100px Arial"});
+					skull.text.x = k*200 + 100 - (skull.text.width / 2);
+					skull.text.y = j*200 + 100 - (skull.text.height / 2);
 					break;
 				}
 			}
@@ -233,6 +236,8 @@ function displayCountDown(seconds) {
 	}
 	// Decrement Timer
 	countDown.text = String(seconds);
+	countDown.x = 400 - (countDown.width / 2);
+	countDown.y = 300 - (countDown.height / 2);
 	
 	if (seconds == 0)
 		countDown.visible = false;
@@ -279,7 +284,7 @@ function create() {
 
 	aliveText = game.add.text(25, 25,"alive:", {font: "20px Arial"});
 	connectedText = game.add.text(25, aliveText.height + 15,"online:", {font:"20px Arial"});
-	countDown = game.add.text(400,300,"",{font: "50px Arial"});
+	countDown = game.add.text(400,300,"",{font: "400px Arial"});
 
 	socket.emit('requestInformation',"asd");
 
