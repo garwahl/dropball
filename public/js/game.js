@@ -136,8 +136,8 @@ function fullScreen() {
 function createTiles() {
 	var tiles = game.add.group();
 	var tile;
-	for (var i = 0; i < 7; i ++) {
-		for (var j = 0; j < 7; j++) {
+	for (var i = 0; i < 4; i ++) {
+		for (var j = 0; j < 3; j++) {
 			tile = tiles.create(i*200,j*200,'tile');
 		}
 	}
