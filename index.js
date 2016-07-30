@@ -40,7 +40,7 @@ setInterval(function() {
 	console.log(gameState + ": " + currentTimer);
 	currentTimer = currentTimer + 1;
 	if (gameState == "wait") {
-		io.emit('startTime', 11-currentTimer);
+		io.emit('startTime', 10-currentTimer);
 		if (currentTimer >= 10) {
 			currentTimer = -1;
 			gameState = "play";
