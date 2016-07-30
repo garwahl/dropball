@@ -30,7 +30,7 @@ setInterval(function() {
 	});
 	io.emit("playerPositions", allPlayers);
 
-}, 1000/15);
+}, 1000/8);
 
 function CreateNewPlayer(socketID) {
 	players[socketID] = new Object();
