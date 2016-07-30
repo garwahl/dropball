@@ -23,7 +23,7 @@ function setMovement(player) {
 	player.body.bounce = 0.1;
 
 	// Gyro controls
-	gyro.frequency = 500
+	gyro.frequency = 5
 	gyro.startTracking(function(entity) {
 		player.body.velocity.x += entity.alpha;
 		player.body.velocity.y += entity.gamma;
