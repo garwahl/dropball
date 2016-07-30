@@ -147,6 +147,13 @@ function createTiles() {
 function changeDangerTiles(zones) {
 	skullcords = [];
 	skullcords = zones; 
+
+	// Clear skulls sprite group
+	if (skulls.length > 0) {
+		skulls.forEach(function(item) {
+			skulls.remove(item);
+		})
+	}
 	var skull;
 	// Iterate through each coordinate that will be a danger zone
 	for (var i = 0; i < skullcords.length; i++) {
@@ -169,10 +176,12 @@ function flashSkulls(color) {
 	var col,row;
 	game.world.bringToTop(skulls);
 	skulls.forEach(function(item) {
-		if (color == "red")
-			item.tint = 0xff0000;
-		else 
+		if (color == "yellow")
+			item.tint = 0xffff00;
+		else if (color == "black") 
 			item.tint = 0x000000;
+		else if (color == "red")
+			item.tint == 0xff0000;
 	})
 }
 
