@@ -2,7 +2,8 @@ var socket;
 var randomgraph;
 window.onload = function() {
 	socket = io();
-	console.log(socket);
+	io.emit('graph', null);
+	// console.log(socket);
 	// Leaderboard
 	// var leaderboardGraphCanvas = document.getElementById("leaderboardGraph");
 	// var leaderboardGraph = new Chart(leaderboardGraphCanvas, {
@@ -111,12 +112,19 @@ window.onload = function() {
 
 
     socket.on('distanceTravelled', function (data) {
-		var distancetobargraph = (Math.max(0, Math.round((data[1]/2))-1));
+    	data.forEach(function(distance) {
+		// var distancetobargraph = (Math.max(0, Math.round((data[1]/2))-1));
 			//distanceGraph.data.datasets[0].data.splice(0,1);
+		if (distance[1] > 0) {
+			console.log(distance[1]);
+			var distancetobargraph = (Math.max(0, Math.round((distance[1]/2))));
 
-		distanceGraph.data.datasets[0].data[distancetobargraph] += 1;
-		//console.log(distanceGraph.datasets);
-		distanceGraph.update();
+			distanceGraph.data.datasets[0].data[distancetobargraph] += 1;
+			//console.log(distanceGraph.datasets);
+			distanceGraph.update();
+    		}
+	    });
+
 	});
 
 
@@ -194,7 +202,7 @@ window.onload = function() {
 
 	socket.on('random', function (data) {
 		var teammemberslost = (Math.round(data));
-		console.log(teamcompGraph);
+		// console.log(teamcompGraph);
 		var teammembersleft = teamcompGraph.data.datasets[0].data[0] + teamcompGraph.data.datasets[0].data[1] + teamcompGraph.data.datasets[0].data[2]
 		if (teammembersleft > 1)
 		{

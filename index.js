@@ -46,9 +46,9 @@ setInterval(function() {
 	Object.keys(players).forEach(function(id) {
 		if (previousPositions[id] != null) {
 			var distance = EuclidianDistance(
-				previousPositions[id].x,
+				previousPositions[id][0],
 				players[id].x,
-				previousPositions[id].y,
+				previousPositions[id][1],
 				players[id].y);
 			distances.push([id, distance]);
 		}
@@ -68,7 +68,7 @@ setInterval(function() {
 		if (currentTimer >= 10) {
 			currentTimer = -1;
 			gameState = "play";
-			alivePlayers = sockets.length;
+			alivePlayers = Object.keys(players).length;
 		}
 	}
 	else if (gameState == "play") {
@@ -194,8 +194,6 @@ function DeathZoneCalculation(tiles) {
 io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
 	sockets.push(socket);
-	CreateNewPlayer(socket.id);
-
 
 	socket.on('requestInformation', function(data) {
 		var ids = GetAllPlayerIDs()
@@ -203,17 +201,23 @@ io.on('connection', function(socket) {
 		socket.emit('newPlayer', ids);
 		socket.emit('registerSelf', socket.id);
 		socket.broadcast.emit('newPlayer', [socket.id]);
+
+		CreateNewPlayer(socket.id);
 	});
 
 	socket.on('updateVelocity', function(velocity) {
-		players[socket.id].xVelocity = velocity[0];
-		players[socket.id].yVelocity = velocity[1];
+		if (players[socket.id] != null) {
+			players[socket.id].xVelocity = velocity[0];
+			players[socket.id].yVelocity = velocity[1];
+		}
 	});
 
 	socket.on('updatePosition', function(position) {
-		players[socket.id].x = position[0];
-		players[socket.id].y = position[1];
-//		console.log(socket.id + ": " + position[0] + ", " + position[1]);
+		if (players[socket.id] != null) {
+			players[socket.id].x = position[0];
+			players[socket.id].y = position[1];
+	//		console.log(socket.id + ": " + position[0] + ", " + position[1]);
+		}
 	});
 
 	socket.on('disconnect', function(data) {
@@ -227,7 +231,8 @@ io.on('connection', function(socket) {
 	
 		io.emit("disconnectPlayer", socket.id);		
 
-		delete players[socket.id];
+		if (players[socket.id] != null)
+			delete players[socket.id];
 	});
 	
 });
