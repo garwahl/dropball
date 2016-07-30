@@ -14,7 +14,7 @@ var skullcords = [];
 // Group of skull sprites
 var skulls;
 
-var countDown = game.add.text(0.5,0.5,"",{font: 50px Arial});
+var countDown;
 
 // ############
 // # Functions#
@@ -172,7 +172,7 @@ function changeDangerTiles(zones) {
 					// Change sprite to danger zone
 					skull = skulls.create(k*200,j*200,'whiteskull');
 					skull.visible = false;
-					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "70px Arial"});
+					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "bold 70px Arial"});
 					break;
 				}
 			}
@@ -211,11 +211,12 @@ function murder(people) { //array of objs
 
 // Display the waiting time until the game starts
 function displayCountDown(seconds) {
+	countDown.visible = true;
 	// Revive dead players
 	if (seconds == 9) {
 		for (i = 0; i < players.length; i++) {
-			if (players[i].alive == false)
-				players[i].revive();
+			if (players[i].sprite.alive == false)
+				players[i].sprite.revive();
 		}
 	}
 	// Remove skulls from map
@@ -227,7 +228,9 @@ function displayCountDown(seconds) {
 	}
 	// Decrement Timer
 	countDown.text = String(seconds);
-	countDown.visible = false;
+	
+	if (seconds == 0)
+		countDown.visible = false;
 }
 
 
@@ -269,6 +272,7 @@ function create() {
 
 	aliveText = game.add.text(400, 25,"Players Alive: NULL", {font: "30px Arial"});
 	connectedText = game.add.text(25, 25,"Players Online: NULL", {font:"30px Arial"});
+	countDown = game.add.text(400,300,"",{font: "50px Arial"});
 
 	socket.emit('requestInformation',"asd");
 
