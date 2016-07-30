@@ -5,7 +5,7 @@ window.onload = function() {
 	console.log(socket);
 
 	//Distance travelled 
-	var distanceGraphCanvas = document.getElementById('distanceGraph');
+	var distanceGraphCanvas = document.getElementById("distanceGraph");
 	var distanceGraph = new Chart(distanceGraphCanvas, {
 		type = 'bar',
     	data = {
