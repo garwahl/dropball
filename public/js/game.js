@@ -39,6 +39,8 @@ function setUpConnections() {
 	socket.on('disconnectPlayer',disconnectPlayer); 
 	socket.on('getDanger',changeDangerTiles);
 	socket.on('flash',flashSkulls); 
+
+	socket.on('killInnocents', murder);
 }
 
 // Set up a your own character
@@ -55,7 +57,6 @@ function registerPlayers(id) {
 		}
 	}
 }
-
 
 // Set the movement of each individual player without gyro
 function setMovement(player) {
@@ -173,27 +174,17 @@ function flashSkulls(color) {
 		else 
 			item.tint = 0x000000;
 	})
+}
 
-	// var skull;
-	// // Iterate through each coordinate that will be a danger zone
-	// for (var i = 0; i < skullcords.length; i++) {
-	// 	col = skullcords[i][0]; //x
-	// 	row = skullcords[i][1]; //y
-	// 	// Go through white tiles, changing target tile to danger zone
-	// 	for (var j = 0; j < 6; j++) {
-	// 		for (var k = 0; k < 6; k++) {
-	// 			if (col == k && row == j) {
-	// 				// Change sprite to danger zone
-	// 				if (color == "red")
-	// 					skull = skulls.create(k*200,j*200,'altskull');
-	// 				else if (color == "black") {
-	// 					skull = create(k*200,j*200,'skull');
-	// 				}
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// }
+// Kill players
+function murder(people) {
+	for (i = 0; i < people.length; i++) {
+		for (j = 0; j < players.length; j++) {
+			// Target acquired..
+			if (players[j].id == people[i])
+				players[j].sprite.kill();
+		}
+	}
 }
 
 
