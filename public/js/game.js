@@ -66,9 +66,11 @@ function create() {
 	// Test movement
 	var kirby = createPlayer('kirby');
 	setMovement(kirby);
+
+	// Send player position back to server
+	setInterval(sendPosition(player.position.x, player.position.y),tickRate);
 }
 
 function update() {
-	// // Send player position back to server
-	// setInterval(sendPosition(player.x, player.y),tickRate);
+
 }
