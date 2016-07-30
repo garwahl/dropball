@@ -25,8 +25,8 @@ function setMovement(player) {
 	// Gyro controls
 	gyro.frequency = 5
 	gyro.startTracking(function(entity) {
-		player.body.velocity.x += entity.alpha;
-		player.body.velocity.y += entity.gamma;
+		player.body.velocity.x += entity.gamma;
+		player.body.velocity.y += entity.alpha;
 	});
 
 }
