@@ -3,6 +3,44 @@ var randomgraph;
 window.onload = function() {
 	socket = io();
 	console.log(socket);
+	// Leaderboard
+	// var leaderboardGraphCanvas = document.getElementById("leaderboardGraph");
+	// var leaderboardGraph = new Chart(leaderboardGraphCanvas, {
+	// 	type: 'horizontalBar',
+	// 	data: {
+	// 		labels: ['Player' + Math.round(Math.random()*10)],
+	// 		datasets: [{
+	// 			label: 'Most recent death',
+	// 			data: [1],
+	// 		}]
+	// 	},
+	// 	options: {
+	//         scales: {
+	//             xAxes: [{
+	//                 ticks: {
+	//                     beginAtZero:true,
+	//                     max: 100,
+	//                 }
+	//             }]
+	//         }
+	//     }
+	// });
+
+	// var playerranking = 0;
+	// socket.on('random', function (data) {
+		
+	// 	leaderboardGraph.data.labels.unshift('Player' + Math.round(Math.random()*100));
+	// 	leaderboardGraph.data.datasets[0].data.unshift(playerranking);
+		
+	// 	if (leaderboardGraph.data.datasets[0].data.length == 6)
+	// 	{
+	// 		leaderboardGraph.data.labels.splice(-1,1);
+	// 		leaderboardGraph.data.datasets[0].data.splice(-1,1);
+	// 	}
+
+	// 	leaderboardGraph.update();
+	// 	playerranking += 1;
+	// });
 
 	// Distance Travelled Graph
 	var distanceGraphCanvas = document.getElementById("distanceGraph");
@@ -94,7 +132,7 @@ window.onload = function() {
 		if (recentdeathsGraph.data.datasets[0].data.length == 6)
 		{
 			recentdeathsGraph.data.labels.splice(0,1);
-			recentdeathsGraph.data.datasets[0].data.splice(0, 1);
+			recentdeathsGraph.data.datasets[0].data.splice(0,1);
 		}
 		recentdeathsGraph.update();
 	});
