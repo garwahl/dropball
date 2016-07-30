@@ -9,7 +9,10 @@ var players = [];
 // My own character
 var me; 
 
+// Coords of sprites
 var skullcords = [];
+// Group of skull sprites
+var skulls;
 
 // ############
 // # Functions#
@@ -30,7 +33,7 @@ function createPlayer(id,sprite) {
 }
 
 // Set up all connections 
-var setUpConnections = function() {
+function setUpConnections() {
 	socket.on('registerSelf', registerSelf);
 	socket.on('newPlayer',registerPlayers);
 	socket.on('disconnectPlayer',disconnectPlayer); 
@@ -40,8 +43,7 @@ var setUpConnections = function() {
 
 // Set up a your own character
 function registerSelf(id) {
-	me = createPlayer(id, 'kirby');
-	setMovementSelf(me.sprite);
+	me.id = id;
 }
 
 // Set up everyone elses character 
@@ -144,11 +146,6 @@ function createTiles() {
 function changeDangerTiles(zones) {
 	skullcords = [];
 	skullcords = zones; 
-}
-// Change skull color 
-function flashSkulls(color) {
-	var col,row;
-	var skulls = game.add.group();
 	var skull;
 	// Iterate through each coordinate that will be a danger zone
 	for (var i = 0; i < skullcords.length; i++) {
@@ -159,16 +156,44 @@ function flashSkulls(color) {
 			for (var k = 0; k < 6; k++) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
-					if (color == "red")
-						skull = skulls.create(k*200,j*200,'altskull');
-					else if (color == "black") {
-						skull = create(k*200,j*200,'skull');
-					}
+					skull = skulls.create(k*200,j*200,'whiteskull');
 					break;
 				}
 			}
 		}
 	}
+}
+// Change skull color 
+function flashSkulls(color) {
+	var col,row;
+	game.world.bringToTop(skulls);
+	skulls.forEach(function(item) {
+		if (color == "red")
+			item.tint = 0xff0000;
+		else 
+			item.tint = 0x000000;
+	})
+
+	// var skull;
+	// // Iterate through each coordinate that will be a danger zone
+	// for (var i = 0; i < skullcords.length; i++) {
+	// 	col = skullcords[i][0]; //x
+	// 	row = skullcords[i][1]; //y
+	// 	// Go through white tiles, changing target tile to danger zone
+	// 	for (var j = 0; j < 6; j++) {
+	// 		for (var k = 0; k < 6; k++) {
+	// 			if (col == k && row == j) {
+	// 				// Change sprite to danger zone
+	// 				if (color == "red")
+	// 					skull = skulls.create(k*200,j*200,'altskull');
+	// 				else if (color == "black") {
+	// 					skull = create(k*200,j*200,'skull');
+	// 				}
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 
 
@@ -179,6 +204,7 @@ function preload() {
 	game.load.image('tile', 'img/whitetile.png');
 	game.load.image('skull', 'img/skull.png');
 	game.load.image('altskull', 'img/altskull.png');
+	game.load.image('whiteskull', 'img/whiteskull.png');
 }
 
 function create() {
@@ -186,9 +212,11 @@ function create() {
 	//Arcade Physics System
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 
+	skulls = game.add.group();
 	// Set up game tiles
 	createTiles();
-
+	me = createPlayer(0, 'kirby');
+	setMovementSelf(me.sprite);
 	// Set up connections as either me or everyone else
 	setUpConnections();
 	// Update Player Positions
