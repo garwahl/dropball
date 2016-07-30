@@ -151,6 +151,7 @@ function changeDangerTiles(zones) {
 	// Clear skulls sprite group
 	if (skulls.length > 0) {
 		skulls.forEach(function(item) {
+			item.text = "";
 			skulls.remove(item);
 		})
 	}
@@ -165,6 +166,7 @@ function changeDangerTiles(zones) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
 					skull = skulls.create(k*200,j*200,'whiteskull');
+					skull.visible = false;
 					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "50px Arial"});
 					break;
 				}
@@ -176,14 +178,16 @@ function changeDangerTiles(zones) {
 function flashSkulls(color) {
 	game.world.bringToTop(skulls);
 	skulls.forEach(function(item) {
-		if (color == "red") {
+		console.log(color);
+		if (color == "0") {
+			item.visible = true;
 			item.tint = 0xff0000;
+			item.text.text = "";
 		}
-		else if (color == "yellow") {
-			item.tint = 0xffff00;
+		else {
+			item.text.text = color;
+			item.visible = false;
 		}
-		else if (color == "black") 
-			item.tint = 0x000000;
 	})
 }
 
