@@ -50,7 +50,7 @@ window.onload = function() {
 		data: {
 	    datasets: [
 	        {
-	            label: 'First Dataset',
+	            label: 'Death Location',
 	            data: [
 	                {
 	                    x: 2,
@@ -69,7 +69,15 @@ window.onload = function() {
 	                borderColor: 'rgb(0, 0, 0)'
 	            }
 	        }
-	    }
+	        // scales: {
+         //        yAxes: [{
+         //            ticks: {
+         //                min: 0,
+         //                beginAtZero: true
+         //            }
+         //        }]
+         //    }
+	    },
 	});
 	
 	// Distance Travelled Graph
