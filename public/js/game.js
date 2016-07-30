@@ -32,6 +32,7 @@ function createPlayer(id,sprite) {
 var setUpConnections = function() {
 	socket.on('registerSelf', registerSelf);
 	socket.on('newPlayer',registerPlayers);
+	socket.on('disconnectPlayer',disconnectPlayer); 
 }
 
 // Set up a your own character
@@ -108,6 +109,15 @@ function updatePositions(playerPositions) {
 		}
 	}
 }
+// Check for disconnected player, kill player 
+function disconnectPlayer(id) { 
+  for (var i = 0; i < players.length; i++) { 
+    if (players[i].id == id){ 
+      players[i].sprite.kill(); 
+      players.splice(i,1); 
+    } 
+  } 
+} 
 
 // Change the game into fullscreen
 function fullScreen() {
