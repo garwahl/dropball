@@ -30,7 +30,7 @@ setInterval(function() {
 	});
 	io.emit("playerPositions", allPlayers);
 
-}, 1000/20);
+}, 1000/30);
 
 function CreateNewPlayer(socketID) {
 	players[socketID] = new Object();
@@ -59,6 +59,11 @@ io.on('connection', function(socket) {
 	socket.emit('newPlayer', ids);
 	socket.broadcast.emit('newPlayer', [socket.id]);
 
+	socket.on('updateVelocity', function(velocity) {
+		players[socket.id].xVelocity = velocity[0];
+		players[socket.id].yVelocity = velocity[1];
+	});
+
 	socket.on('updatePosition', function(position) {
 		players[socket.id].x = position[0];
 		players[socket.id].y = position[1];
@@ -68,7 +73,6 @@ io.on('connection', function(socket) {
 	socket.on('disconnect', function(data) {
 		console.log("Disconnection: " + socket.id);
 		for (i = 0; i < sockets.length; i++) {
-			console.log(sockets[i].id);
 			if (sockets[i].id == socket.id) {
 				sockets.splice(i, 1);
 				break;
