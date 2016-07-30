@@ -6,9 +6,10 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 // ############
 
 // Create a new instance of the player at x,y coordinates using sprite player
-function createPlayer(x , y, player) {
+function createPlayer(sprite) {
 	var newPlayer;
-	newPlayer = game.add.sprite(x, y, player);
+	newPlayer = game.add.sprite(150, 150, sprite);
+	newPlayer.anchor.setTo(0.5);
 
 	return newPlayer;
 }
@@ -39,12 +40,17 @@ function fullScreen() {
 
 function preload() {
 	game.load.image('black', 'img/black.png');
+	game.load.image('kirby', 'img/kirby.png');
 }
 
 function create() {
 	fullScreen();
 	//Arcade Physics System
 	game.physics.startSystem(Phaser.Physics.ARCADE);
+
+	// Test movement
+	var kirby = createPlayer('kirby');
+	setMovement(kirby);
 }
 
 function update() {
