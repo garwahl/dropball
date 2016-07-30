@@ -1,19 +1,21 @@
 <!doctype html> 
 <html lang="en"> 
 <head> 
+
 	<!-- Chart.js Script -->
 	<!-- <script type="text/javascript" src="js/Chart.min.js"></script> -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.0/Chart.min.js"> </script>
 	<script type="text/javascript" src="js/data.js"></script>
 	
 	<script src="/socket.io/socket.io.js"></script>
+	<!-- Random names for leaderboard
+	<script src="chance.js"></script> -->
 </head>
 <body>
-	<!--
+	<!-- Leaderboard
 	<div style="width: 500px;height: 500px">
-	<canvas id="randomgraph" width="400" height="400"></canvas>
-	</div>
-	-->
+	<canvas id="leaderboardGraph" width="400" height="400"></canvas>
+	</div> -->
 	<!-- Distance travelled-->
 	<div style="width: 500px;height: 500px">
 	<canvas id="distanceGraph" width="400" height="400"></canvas>
@@ -26,6 +28,7 @@
 	<div style="width: 500px;height: 500px">
 	<canvas id="teamcompGraph" width="400" height="400"></canvas>
 	</div>
+
 	<!-- Players left
 	<div style="width: 500px;height: 500px">
 	<canvas id="survivingGraph" width="400" height="400"></canvas>
