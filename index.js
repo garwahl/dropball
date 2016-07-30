@@ -57,7 +57,7 @@ setInterval(function() {
 			io.emit('flash', 'black');
 			var dead = DeathZoneCalculation(dangerZones);
 			io.emit('playerDeaths', dead);
-			currentTimer = 0;
+			currentTimer = -1;
 			alivePlayers -= dead.length;
 		}
 		else {
