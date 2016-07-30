@@ -98,7 +98,7 @@ window.onload = function() {
 			recentdeathsGraph.data.labels.splice(0, 1); // remove first label
     		recentdeathsGraph.data.datsets.forEach(function(dataset) {
         	dataset.data.splice(0, 1); // remove first data point
-			}
+			})
 		}
    		chart.update();
 		
