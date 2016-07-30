@@ -41,6 +41,7 @@ function setUpConnections() {
 	socket.on('flash',flashSkulls); 
 
 	socket.on('playerDeaths', murder);
+
 }
 
 // Set up a your own character
@@ -197,7 +198,8 @@ function murder(people) { //array of objs
 	for (i = 0; i < people.length; i++) {
 		for (j = 0; j < players.length; j++) {
 			// Target acquired..
-			if (players[j].id == people[i].id)
+			console.log(players[j]);
+			if (players[j].id == people[i][0].id)
 				players[j].sprite.kill();
 		}
 	}
@@ -211,7 +213,7 @@ function preload() {
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('kappa', 'img/kappa.png');
 	game.load.image('bible', 'img/biblethump.jpg');
-	
+
 	// Game Assets
 	game.load.image('tile', 'img/whitetile.png');
 	game.load.image('skull', 'img/skull.png');
@@ -241,6 +243,8 @@ function create() {
 
 	aliveText = game.add.text(400, 25,"Players Alive: NULL", {font: "30px Arial"});
 	connectedText = game.add.text(25, 25,"Players Online: NULL", {font:"30px Arial"});
+
+	socket.emit('requestInformation',["asd"]);
 }
 
 function update() {
