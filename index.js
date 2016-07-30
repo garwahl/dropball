@@ -36,13 +36,15 @@ setInterval(function() {
 }, 1000);
 
 setInterval(function() {
+	console.log(alivePlayers);
 	console.log(gameState + ": " + currentTimer);
 	currentTimer = currentTimer + 1;
 	if (gameState == "wait") {
-		if (currentTimer >= 5) {
+		io.emit('startTime', 11-currentTimer);
+		if (currentTimer >= 10) {
 			currentTimer = -1;
 			gameState = "play";
-			alivePlayers = players.length;
+			alivePlayers = sockets.length;
 		}
 	}
 	else if (gameState == "play") {
