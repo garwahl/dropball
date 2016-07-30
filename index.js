@@ -83,11 +83,20 @@ function IsInTile(x, y, charX, charY) {
 	return false;
 }
 
-function DeathZoneCalculation(tileX, tileY, size) {
+function DeathZoneCalculation(tiles) {
+	var deadPlayers = [];	
 	var ids = GetAllPlayerIDs();
-	for (i = 0; i < ids.length; i++) {
-	
-	}
+	tiles.forEach(function(tile) {
+		for (i = 0; i < ids.length; i++) {
+			var currentPlayer = players[ids[i]];
+
+			if (IsInTile(tileX, tileY, currentPlayer.x, currentPlayer.y)) {
+				deadPlayers.push(currentPlayer);
+			}
+		}
+	});
+
+	return deadPlayers;
 }
 
 io.on('connection', function(socket) {
@@ -95,6 +104,7 @@ io.on('connection', function(socket) {
 	sockets.push(socket);
 	CreateNewPlayer(socket.id);
 	socket.emit('registerSelf', socket.id);
+	console.log('emitted');
 
 	io.emit('getDanger', GetDangerZones(4,3));
 
