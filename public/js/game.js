@@ -3,7 +3,7 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var socket = io("/", { multiplex: false });
-var tickRate = 1000/60; //Tickrate is 3 milliseconds
+var tickRate = 1000/30; //Tickrate is 3 milliseconds
 
 var players = [];
 // My own character
