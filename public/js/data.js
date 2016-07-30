@@ -4,7 +4,6 @@ window.onload = function() {
 	socket = io();
 	console.log(socket);
 
-	<script>
 	var distanceGraphCanvas = document.getElementById("distanceGraph");
 	var distanceGraph = new Chart(distanceGraphCanvas, {
 	    type = 'bar',
