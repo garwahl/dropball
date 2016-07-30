@@ -213,6 +213,7 @@ function preload() {
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('kappa', 'img/kappa.png');
 	game.load.image('bible', 'img/biblethump.jpg');
+	game.load.image('trump' 'img/trump.png');
 
 	// Game Assets
 	game.load.image('tile', 'img/whitetile.png');
@@ -243,6 +244,8 @@ function create() {
 
 	aliveText = game.add.text(400, 25,"Players Alive: NULL", {font: "30px Arial"});
 	connectedText = game.add.text(25, 25,"Players Online: NULL", {font:"30px Arial"});
+
+	socket.emit('requestInfo',"asd");
 
 }
 
