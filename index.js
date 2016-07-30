@@ -18,8 +18,10 @@ var gameState = "wait";
 var currentTimer = 0;
 
 var alivePlayers = 0;
+var deadPlayers
 
 var deathZones = [];
+var dangerZones = [];
 
 // Constants
 var PLAYER_SIZE = 75;
@@ -37,7 +39,7 @@ setInterval(function() {
 	console.log(gameState + ": " + currentTimer);
 	currentTimer = currentTimer + 1;
 	if (gameState == "wait") {
-		if (currentTimer >= 10) {
+		if (currentTimer >= 5) {
 			currentTimer = -1;
 			gameState = "play";
 			alivePlayers = players.length;
@@ -51,10 +53,10 @@ setInterval(function() {
 		else if (currentTimer == 0) {
 			dangerZones = GetDangerZones(4,3);
 			io.emit('getDanger', dangerZones); 
-			io.emit('flash', 'yellow');
+			io.emit('flash', '3');
 		}
 		else if (currentTimer >= 3) {
-			io.emit('flash', 'red');
+			io.emit('flash', 0);
 			var dead = DeathZoneCalculation(dangerZones);
 			io.emit('playerDeaths', dead);
 			currentTimer = -1;
@@ -64,10 +66,7 @@ setInterval(function() {
 			var colours = ['yellow', 'black'];
 			for (i = 1; i < 3; i++) {
 				if (currentTimer == i) {
-					if (i%2 == 0)
-						io.emit('flash', colours[0]);
-					else 
-						io.emit('flash', colours[1]);
+					io.emit('flash', String(3-i));
 				}
 			}
 		}
@@ -105,12 +104,21 @@ function GetDangerZones(width, height) {
 		tmp.push([Math.floor(Math.random() * width), Math.floor(Math.random() * height)]);
 	}
 	
-	console.log(tmp);	
-
 	return tmp;
 }
 
 function GetCorners(x, y, size) {
+	var corners = [
+		[x*size, y*size],
+		[x*size+size, y*size],
+		[x*size, y*size+size],
+		[x*size+size, y*size+size]
+	];
+
+	return corners;
+}
+
+function GetCornersPlayer(x, y, size) {
 	var corners = [
 		[x, y],
 		[x+size, y],
@@ -122,33 +130,37 @@ function GetCorners(x, y, size) {
 }
 
 function IsInTile(x, y, charX, charY) {
-	var charCorners = GetCorners(charX, charY, PLAYER_SIZE);
+	var charCorners = GetCornersPlayer(charX, charY, PLAYER_SIZE);
 	var wallCorners = GetCorners(x, y, TILE_SIZE);
+	var isIn = false;
+
 	charCorners.forEach(function(corner) {
-		if (corner[0] > wallCorners[0][0] &&
-			corner[0] < wallCorners[1][0] &&
-			corner[1] > wallCorners[0][1] &&
-			corner[1] < wallCorners[2][1]) {
-			return true;
+		if (corner[0] >= wallCorners[0][0] &&
+			corner[0] <= wallCorners[1][0] &&
+			corner[1] >= wallCorners[0][1] &&
+			corner[1] <= wallCorners[2][1]) {
+			isIn = true;
 		}
 	});
 
-	return false;
+	return isIn;
 }
 
 function DeathZoneCalculation(tiles) {
 	var deadPlayers = [];	
 	var ids = GetAllPlayerIDs();
+	console.log(players);
+
 	tiles.forEach(function(tile) {
 		for (i = 0; i < ids.length; i++) {
 			var currentPlayer = players[ids[i]];
+			// console.log(currentPlayer);
 
-			if (IsInTile(tile.x, tile.y, currentPlayer.x, currentPlayer.y)) {
-				deadPlayers.push(currentPlayer);
+			if (IsInTile(tile[0], tile[1], currentPlayer.x, currentPlayer.y) == true) {
+				deadPlayers.push([currentPlayer]);
 			}
 		}
 	});
-
 	return deadPlayers;
 }
 
@@ -156,13 +168,15 @@ io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
 	sockets.push(socket);
 	CreateNewPlayer(socket.id);
-	socket.emit('registerSelf', socket.id);
-	console.log('emitted');
 
-	var ids = GetAllPlayerIDs()
 
-	socket.emit('newPlayer', ids);
-	socket.broadcast.emit('newPlayer', [socket.id]);
+	socket.on('requestInformation', function(data) {
+		var ids = GetAllPlayerIDs()
+
+		socket.emit('newPlayer', ids);
+		socket.emit('registerSelf', socket.id);
+		socket.broadcast.emit('newPlayer', [socket.id]);
+	});
 
 	socket.on('updateVelocity', function(velocity) {
 		players[socket.id].xVelocity = velocity[0];
