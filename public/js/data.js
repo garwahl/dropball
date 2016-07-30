@@ -2,7 +2,7 @@ var socket;
 var randomgraph;
 window.onload = function() {
 	socket = io();
-	io.emit('graph', null);
+	socket.emit('graph', null);
 	// console.log(socket);
 	// Leaderboard
 	// var leaderboardGraphCanvas = document.getElementById("leaderboardGraph");

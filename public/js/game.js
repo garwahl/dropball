@@ -191,7 +191,6 @@ function changeDangerTiles(zones) {
 function flashSkulls(color) {
 	game.world.bringToTop(skulls);
 	skulls.forEach(function(item) {
-		console.log(color);
 		if (color == "0") {
 			item.visible = true;
 			item.tint = 0xff0000;
@@ -206,11 +205,9 @@ function flashSkulls(color) {
 
 // Kill players
 function murder(people) { //array of objs
-	console.log(people);
 	for (i = 0; i < people.length; i++) {
 		for (j = 0; j < players.length; j++) {
 			// Target acquired..
-			console.log(players[j]);
 			if (players[j].id == people[i][0].id)
 				players[j].sprite.kill();
 		}
@@ -248,12 +245,13 @@ function preload() {
 	// Avatars
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('kappa', 'img/kappa.png');
-	game.load.image('bible', 'img/biblethump.jpg');
+	game.load.image('bible', 'img/biblethump.png');
 	game.load.image('trump', 'img/trump.png');
-	game.load.image('pepe', 'img/pepe.jpg');
+	game.load.image('pepe', 'img/pepe.png');
 
 	// Game Assets
-	game.load.image('tile', 'img/whitetile.png');
+	// game.load.image('tile', 'img/whitetile.png');
+	game.load.image('tile', 'img/properTile.png');
 	game.load.image('skull', 'img/skull.png');
 	game.load.image('altskull', 'img/altskull.png');
 	game.load.image('whiteskull', 'img/whiteskull.png');
@@ -279,8 +277,8 @@ function create() {
 	// Send player position back to server
 	setInterval(function() {sendPosition(me.sprite.position.x, me.sprite.position.y)},tickRate);
 
-	aliveText = game.add.text(400, 25,"Players Alive: NULL", {font: "30px Arial"});
-	connectedText = game.add.text(25, 25,"Players Online: NULL", {font:"30px Arial"});
+	aliveText = game.add.text(25, 25,"alive:", {font: "20px Arial"});
+	connectedText = game.add.text(25, aliveText.height + 15,"online:", {font:"20px Arial"});
 	countDown = game.add.text(400,300,"",{font: "50px Arial"});
 
 	socket.emit('requestInformation',"asd");
