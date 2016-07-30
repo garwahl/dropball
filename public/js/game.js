@@ -150,8 +150,8 @@ function changeDangerTiles(zones) {
 			for (var k = 0; k < 6; k++) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
-					game.add.sprite(j*200,k*200,'red');
-					game.add.sprite(j*100,k*50,'skull');
+					// game.add.sprite(j*200,k*200,'red');
+					game.add.sprite(j*200,k*200,'skull');
 					break;
 				}
 			}
@@ -165,7 +165,7 @@ function preload() {
 	game.load.image('black', 'img/black.png');
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('tile', 'img/whitetile.png');
-	game.load.image('red','img/red.jpg');
+	// game.load.image('red','img/red.jpg');
 	game.load.image('skull', 'img/skull.png');
 }
 
