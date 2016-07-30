@@ -20,7 +20,7 @@ function createPlayer(id,sprite) {
 		id: id,
 		sprite: game.add.sprite(150, 150, sprite)
 	};
-
+	newPlayer.sprite.scale.setTo(0.5,0.5);
 	newPlayer.sprite.anchor.setTo(0.5);
 
 	players.push(newPlayer);
@@ -122,6 +122,19 @@ function disconnectPlayer(id) {
 // Change the game into fullscreen
 function fullScreen() {
 	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+	game.scale.pageAlignHorizontally=true;
+	game.scale.pageAlignVertically=false;
+}
+
+// Create game tiles
+function createTiles() {
+	tiles = game.add.group();
+
+	for (var i = 0; i < 6; i ++) {
+		for (var j = 0; j < 6; j++) {
+			var tile = tiles.create(i*200,j*200,'tile');
+		}
+	}
 }
 
 // ##########################
@@ -129,12 +142,17 @@ function fullScreen() {
 function preload() {
 	game.load.image('black', 'img/black.png');
 	game.load.image('kirby', 'img/kirby.png');
+	game.load.image('tile', 'img/whitetile.png');
 }
 
 function create() {
 	fullScreen();
 	//Arcade Physics System
 	game.physics.startSystem(Phaser.Physics.ARCADE);
+
+	// Set up game tiles
+	createTiles();
+
 	// Set up connections as either me or everyone else
 	setUpConnections();
 	// Update Player Positions
