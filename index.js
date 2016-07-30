@@ -141,7 +141,7 @@ function DeathZoneCalculation(tiles) {
 		for (i = 0; i < ids.length; i++) {
 			var currentPlayer = players[ids[i]];
 
-			if (IsInTile(tile.x, tile.y, currentPlayer.x, currentPlayer.y)) {
+			if (IsInTile(tile[0], tile[1], currentPlayer.x, currentPlayer.y)) {
 				deadPlayers.push(currentPlayer);
 			}
 		}
