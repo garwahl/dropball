@@ -166,6 +166,7 @@ function changeDangerTiles(zones) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
 					skull = skulls.create(k*200,j*200,'whiteskull');
+					skull.visible = false;
 					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "50px Arial"});
 					break;
 				}
@@ -177,11 +178,16 @@ function changeDangerTiles(zones) {
 function flashSkulls(color) {
 	game.world.bringToTop(skulls);
 	skulls.forEach(function(item) {
+		console.log(color);
 		if (color == "0") {
+			item.visible = true;
 			item.tint = 0xff0000;
+			item.text.text = "";
 		}
-		else
-			item.text = color;
+		else {
+			item.text.text = color;
+			item.visible = false;
+		}
 	})
 }
 
