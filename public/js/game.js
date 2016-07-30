@@ -6,8 +6,10 @@ var socket = io("/", { multiplex: false });
 var tickRate = 1000/60; // Tickrate is 3 milliseconds
 
 var players = [];
+var playerCount = 0;
 // My own character
 var me; 
+var avatars = ['pepe','trump','bible','kirby','kappa'];
 
 // Coords of sprites
 var skullcords = [];
@@ -50,14 +52,18 @@ function setUpConnections() {
 
 // Set up a your own character
 function registerSelf(id) {
+	// playerCount++;
+	// connectedText.text = "Players Online: " + playerCount;
 	me.id = id;
 }
 
 // Set up everyone elses character 
 function registerPlayers(id) {
+	// playerCount++;
+	// connectedText.text = "Players Online: " + playerCount;
 	for (i = 0; i < id.length; i++) {
 		if (id[i] != me.id) {
-			var player = createPlayer(id[i], 'kirby');
+			var player = createPlayer(id[i], avatars[Math.floor(Math.random() * avatars.length)]);
 			setMovement(player.sprite);
 		}
 	}
@@ -122,6 +128,8 @@ function updatePositions(playerPositions) {
 }
 // Check for disconnected player, kill player 
 function disconnectPlayer(id) { 
+	// playerCount--;
+	// connectedText.text = "Players Online: " + playerCount;
   for (var i = 0; i < players.length; i++) { 
     if (players[i].id == id){ 
       players[i].sprite.kill(); 
@@ -242,6 +250,7 @@ function preload() {
 	game.load.image('kappa', 'img/kappa.png');
 	game.load.image('bible', 'img/biblethump.jpg');
 	game.load.image('trump', 'img/trump.png');
+	game.load.image('pepe', 'img/pepe.jpg');
 
 	// Game Assets
 	game.load.image('tile', 'img/whitetile.png');
@@ -261,7 +270,7 @@ function create() {
 	skulls = game.add.group();
 	// Set up game tiles
 	createTiles();
-	me = createPlayer(0, 'kirby');
+	me = createPlayer(0, avatars[Math.floor(Math.random() * avatars.length)]);
 	setMovementSelf(me.sprite);
 	// Set up connections as either me or everyone else
 	setUpConnections();
