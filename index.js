@@ -43,7 +43,6 @@ io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
 	sockets.push(socket);
 	CreateNewPlayer(socket.id);
-	socket.emit('	
 
 	socket.on('updatePosition', function(position) {
 		players[socket.id].x = position[0];
