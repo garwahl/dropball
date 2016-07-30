@@ -76,8 +76,13 @@ function setMovementSelf(player) {
 	gyro.startTracking(function(entity) {
 		player.body.velocity.x += entity.gamma/2;
 		player.body.velocity.y += entity.beta/2;
+		sendVelocity(player.body.velocity.x, player.body.velocity.y); 
 	});	
 }
+// Send client velocity to server 
+function sendVelocity(x, y) {
+	socket.emit('updateVelocity', [x,y]); 
+} 
 
 // Send position of the player back to server
 function sendPosition(x, y) {
@@ -96,6 +101,8 @@ function updatePositions(playerPositions) {
 			if (playerPositions[i].id == players[j].id) {
 				players[j].sprite.position.x = playerPositions[i].x;
 				players[j].sprite.position.y = playerPositions[i].y;
+				players[j].sprite.body.velocity.x = playerPositions[i].xVelocity; 
+        		players[j].sprite.body.velocity.y = playerPositions[i].yVelocity;
 				break;
 			}
 		}
