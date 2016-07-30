@@ -14,7 +14,7 @@ var me;
 // # Functions#
 // ############
 
-// Create a new instance of the player at x,y coordinates using sprite player
+// Create a new instance of the player using socket id and sprite
 function createPlayer(id,sprite) {
 	var newPlayer = {
 		id: id,
