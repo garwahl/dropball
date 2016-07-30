@@ -245,7 +245,7 @@ function create() {
 	aliveText = game.add.text(400, 25,"Players Alive: NULL", {font: "30px Arial"});
 	connectedText = game.add.text(25, 25,"Players Online: NULL", {font:"30px Arial"});
 
-	socket.emit('requestInfo',"asd");
+	socket.emit('requestInformation',"asd");
 
 }
 
