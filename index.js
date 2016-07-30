@@ -12,7 +12,7 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
-}
+});
 
 http.listen(3000, function(){
 	console.log('listening on *:3000');
