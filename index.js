@@ -29,7 +29,6 @@ setInterval(function() {
 		allPlayers.push(players[key]);
 	});
 	io.emit("playerPositions", allPlayers);
-
 }, 1000/8);
 
 function CreateNewPlayer(socketID) {
@@ -46,6 +45,32 @@ function GetAllPlayerIDs() {
 	});
 
 	return keys;
+}
+
+function GetCorners(x, y, size) {
+	var corners = [
+		[x, y],
+		[x+size, y],
+		[x, y+size],
+		[x+size, y+size]
+	];
+
+	return corners;
+}
+
+function IsInTile(x, y, charX, charY) {
+	var charCorners = GetCorners(charX, charY, 75);
+	var wallCorners = GetCorners(x, y, 200);
+	charCorners.forEach(function(corner) {
+		if (corner[0] > wallCorners[0][0] &&
+			corner[0] < wallCorners[1][0] &&
+			corner[1] > wallCorners[0][1] &&
+			corner[1] < wallCorners[2][1]) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 io.on('connection', function(socket) {
