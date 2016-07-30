@@ -40,7 +40,7 @@ function setUpConnections() {
 	socket.on('getDanger',changeDangerTiles);
 	socket.on('flash',flashSkulls); 
 
-	socket.on('killInnocents', murder);
+	socket.on('playerDeaths', murder);
 }
 
 // Set up a your own character
@@ -167,7 +167,7 @@ function changeDangerTiles(zones) {
 					// Change sprite to danger zone
 					skull = skulls.create(k*200,j*200,'whiteskull');
 					skull.visible = false;
-					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "50px Arial"});
+					skull.text = game.add.text(k*200 + 100,j*200 + 100,"3", {font: "70px Arial"});
 					break;
 				}
 			}
@@ -192,11 +192,12 @@ function flashSkulls(color) {
 }
 
 // Kill players
-function murder(people) {
+function murder(people) { //array of objs
+	console.log(people);
 	for (i = 0; i < people.length; i++) {
 		for (j = 0; j < players.length; j++) {
 			// Target acquired..
-			if (players[j].id == people[i])
+			if (players[j].id == people[i].id)
 				players[j].sprite.kill();
 		}
 	}
@@ -206,7 +207,12 @@ function murder(people) {
 // ##########################
 
 function preload() {
+	// Avatars
 	game.load.image('kirby', 'img/kirby.png');
+	game.load.image('kappa', 'img/kappa.png');
+	game.load.image('bible', 'img/biblethump.jpg');
+	
+	// Game Assets
 	game.load.image('tile', 'img/whitetile.png');
 	game.load.image('skull', 'img/skull.png');
 	game.load.image('altskull', 'img/altskull.png');
@@ -214,6 +220,9 @@ function preload() {
 }
 
 function create() {
+	var aliveText;
+	var connectedText;
+
 	fullScreen();
 	//Arcade Physics System
 	game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -230,6 +239,8 @@ function create() {
 	// Send player position back to server
 	setInterval(function() {sendPosition(me.sprite.position.x, me.sprite.position.y)},tickRate);
 
+	aliveText = game.add.text(400, 25,"Players Alive: NULL", {font: "30px Arial"});
+	connectedText = game.add.text(25, 25,"Players Online: NULL", {font:"30px Arial"});
 }
 
 function update() {
