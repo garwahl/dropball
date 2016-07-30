@@ -9,6 +9,7 @@ var players = [];
 // My own character
 var me; 
 
+var skullcords = [];
 
 // ############
 // # Functions#
@@ -34,6 +35,7 @@ var setUpConnections = function() {
 	socket.on('newPlayer',registerPlayers);
 	socket.on('disconnectPlayer',disconnectPlayer); 
 	socket.on('getDanger',changeDangerTiles);
+	socket.on('flash',flashSkulls); 
 }
 
 // Set up a your own character
@@ -129,18 +131,25 @@ function fullScreen() {
 
 // Create game tiles
 function createTiles() {
-	tiles = game.add.group();
-
-	for (var i = 0; i < 6; i ++) {
-		for (var j = 0; j < 6; j++) {
-			var tile = tiles.create(i*200,j*200,'tile');
+	var tiles = game.add.group();
+	var tile;
+	for (var i = 0; i < 7; i ++) {
+		for (var j = 0; j < 7; j++) {
+			tile = tiles.create(i*200,j*200,'tile');
 		}
 	}
 }
 
 // Change Tiles to Danger Tiles
 function changeDangerTiles(zones) {
+	skullcords = [];
+	skullcords = zones; 
+}
+// Change skull color 
+function flashSkulls(color) {
 	var col,row;
+	var skulls = game.add.group();
+	var skull;
 	// Iterate through each coordinate that will be a danger zone
 	for (var i = 0; i < zones.length; i++) {
 		col = zones[i][0]; //x
@@ -150,8 +159,11 @@ function changeDangerTiles(zones) {
 			for (var k = 0; k < 6; k++) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
-					// game.add.sprite(j*200,k*200,'red');
-					game.add.sprite(j*200,k*200,'skull');
+					if (color == "red")
+						skull = skulls.create(k*200,j*200,'redskull');
+					else if (color == "black") {
+						skull = create(k*200,j*200,'skull');
+					}
 					break;
 				}
 			}
@@ -159,13 +171,14 @@ function changeDangerTiles(zones) {
 	}
 }
 
+
 // ##########################
 
 function preload() {
 	game.load.image('black', 'img/black.png');
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('tile', 'img/whitetile.png');
-	// game.load.image('red','img/red.jpg');
+	game.load.image('redskull', 'img/redskull.png');
 	game.load.image('skull', 'img/skull.png');
 }
 
