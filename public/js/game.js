@@ -160,7 +160,7 @@ function flashSkulls(color) {
 				if (col == k && row == j) {
 					// Change sprite to danger zone
 					if (color == "red")
-						skull = skulls.create(k*200,j*200,'redskull');
+						skull = skulls.create(k*200,j*200,'altskull');
 					else if (color == "black") {
 						skull = create(k*200,j*200,'skull');
 					}
