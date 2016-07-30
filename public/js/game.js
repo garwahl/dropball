@@ -33,6 +33,7 @@ var setUpConnections = function() {
 	socket.on('registerSelf', registerSelf);
 	socket.on('newPlayer',registerPlayers);
 	socket.on('disconnectPlayer',disconnectPlayer); 
+	socket.on('getDanger',changeDangerTiles);
 }
 
 // Set up a your own character
@@ -137,12 +138,18 @@ function createTiles() {
 	}
 }
 
+// Change Tiles to Danger Tiles
+function changeDangerTiles(col,row) {
+	
+}
+
 // ##########################
 
 function preload() {
 	game.load.image('black', 'img/black.png');
 	game.load.image('kirby', 'img/kirby.png');
 	game.load.image('tile', 'img/whitetile.png');
+	game.load.image('skull', 'img/skull.png');
 }
 
 function create() {
