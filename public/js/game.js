@@ -12,13 +12,16 @@ function createPlayer(x , y, player) {
 
 	return newPlayer;
 }
+
+// Set the movement of each individual player variable passed as args
+function setMovement(player) {
+
+}
+
 // Change the game into fullscreen
 function fullScreen() {
-	game.scale.pageAlignHorizontally = true;
-	game.scale.pageAlignVertically = true;
-	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	game.scale.setScreenSize(true);
-
+	game.stage.scale.startFullScreen();
+	Phaser.StageScaleMode.EXACT_FIT = 0;
 }
 
 // #############
