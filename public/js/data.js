@@ -5,7 +5,8 @@ window.onload = function() {
 	console.log(socket);
 
 	//Distance travelled 
-	var distanceGraphCanvas = document.getElementById('distanceGraph').getContext('2d');
+	var distanceGraphCanvas = document.getElementById('distanceGraph');
+	var distanceGraph = new Chart(distanceGraphCanvas).Bar(data, {animationSteps: 15});
 		type = 'bar',
     	data = {
 		labels: ["<2m", "2-4m", "4-6m", "6-8m", ">8m"],
@@ -30,8 +31,8 @@ window.onload = function() {
         }]
     };
 
-    distanceGraph = new Chart(distanceGraphCanvas).Bar(data, {animationSteps: 15});
- 
+    
+
     socket.on('random', function (data) {
 		var distancetobargraph = (Math.max(0, Math.round((data/2))-1));
 		distanceGraph.datasets[0].bars[distancetobargraph].value += 1;
@@ -43,7 +44,7 @@ window.onload = function() {
     var recentdeathsGraphCanvas = document.getElementById('recentdeathsGraph').getContext('2d');
 		type = 'line',
     	data = {
-		labels: [ 0],
+		labels: [0],
 		datasets: [{
 		    label: '# of deaths',
 		    data: [1],
@@ -84,18 +85,23 @@ window.onload = function() {
 
 	socket.on('random', function (data) {
 //		console.log(data)
-	
-		timepassedfordeaths += 1;
-		recentdeathsGraph.addData([data], timepassedfordeaths);
-		console.log(recentdeathsGraph.datasets[0].points.length);
-		if (recentdeathsGraph.datasets[0].points.length == 6)
-		{
-		recentdeathsGraph.removeData();
-		}
-		else
-		{
 
+		timepassedfordeaths += 1;
+
+		//Adding new data
+		recentdeathsGraph.data.labels.push(timepassedfordeaths);
+		recentdeathsGraph.data.datsets.forEach(function(dataset, index) {
+        dataset.data.push(newData[index]); // add new data at end
+   		}); 
+		if (recentdeathsGraph.datsets[0].points.length == 6)
+		{
+			recentdeathsGraph.data.labels.splice(0, 1); // remove first label
+    		recentdeathsGraph.data.datsets.forEach(function(dataset) {
+        	dataset.data.splice(0, 1); // remove first data point
+			}
 		}
+   		chart.update();
+		
 	});
 	// Team composition pie chart
 	var teamcompGraphCanvas = document.getElementById('teamcompGraph');
