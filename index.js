@@ -39,15 +39,30 @@ function CreateNewPlayer(socketID) {
 	players[socketID].y = 0;
 }
 
+function GetAllPlayerIDs() {
+	var keys = [];
+	Object.keys(players).forEach(function(key) {
+		keys.push(key);
+	});
+
+	return keys;
+}
+
 io.on('connection', function(socket) {
 	console.log("Connection: " + socket.id);
 	sockets.push(socket);
 	CreateNewPlayer(socket.id);
+	socket.emit('registerSelf', socket.id);
+
+	var ids = GetAllPlayerIDs()
+
+	socket.emit('newPlayer', ids);
+	socket.broadcast.emit('newPlayer', [socket.id]);
 
 	socket.on('updatePosition', function(position) {
 		players[socket.id].x = position[0];
 		players[socket.id].y = position[1];
-		console.log(socket.id + ": " + position[0] + ", " + position[1]);
+//		console.log(socket.id + ": " + position[0] + ", " + position[1]);
 	});
 
 	socket.on('disconnect', function(data) {
