@@ -65,9 +65,9 @@ setInterval(function() {
 			for (i = 1; i < 3; i++) {
 				if (currentTimer == i) {
 					if (i%2 == 0)
-						io.emit('flash', colours[0];
+						io.emit('flash', colours[0]);
 					else 
-						io.emit('flash', colours[1];
+						io.emit('flash', colours[1]);
 				}
 			}
 		}
