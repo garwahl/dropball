@@ -71,12 +71,13 @@ window.onload = function() {
 	        }
 	    }
 	});
+	
 	// Distance Travelled Graph
 	var distanceGraphCanvas = document.getElementById("distanceGraph");
 	var distanceGraph = new Chart(distanceGraphCanvas, {
 	    type: 'bar',
 	    data: {
-	        labels: ["<2m", "2-4m", "4-6m", "6-8m", ">8m"],
+	        labels: ["<20cm", "20-40cm", "40-60cm", "60-80cm", "80-100cm", ">100cm"],
 	        datasets: [{
 	            label: 'Total Distance Travelled',
 	            data: [0, 0, 0, 0, 0],
@@ -86,6 +87,7 @@ window.onload = function() {
 	                'rgba(255, 206, 86, 0.2)',
 	                'rgba(75, 192, 192, 0.2)',
 	                'rgba(153, 102, 255, 0.2)',
+	                'rgba(21, 71, 208, 0.2)',
 	                'rgba(54, 162, 235, 1)'
 	            ],
 	            borderColor: [
@@ -94,6 +96,7 @@ window.onload = function() {
 	                'rgba(255, 206, 86, 1)',
 	                'rgba(75, 192, 192, 1)',
 	                'rgba(153, 102, 255, 1)',
+	                'rgba(21, 71, 208, 0.2)',
 	                'rgba(54, 162, 235, 1)'
 	            ],
 	            borderWidth: 1,
@@ -160,7 +163,7 @@ window.onload = function() {
 	});
 
     var timepassedfordeaths = 0;
-    socket.on('random', function (data) {
+    socket.on('deathsInLastSec', function (data) {
     	timepassedfordeaths += 1;
     	//Add new data
 		recentdeathsGraph.data.datasets[0].data.push(data);
