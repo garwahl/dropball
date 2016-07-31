@@ -98,8 +98,8 @@ setInterval(function() {
 			var deadPositions = [];
 
 			for (i = 0; i < dead.length; i++) {
-				deadPositions.push([dead[i].x, dead[i].y]);
-				io.emit('travelledDistance', travelledDistances[dead[i].id]);
+				deadPositions.push([dead[i][0].x, dead[i][0].y]);
+				io.emit('travelledDistance', travelledDistances[dead[i][0].id]);
 			}
 
 			io.emit('deathsInLastSec', dead.length);
