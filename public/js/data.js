@@ -65,7 +65,7 @@ window.onload = function() {
 	                {
 	                	x: 2,
 	                	y: 2,
-	                	r: 4,
+	                	r: -1,
 	                }
 	            ],
 	            backgroundColor:"#FF6384",
@@ -82,11 +82,12 @@ window.onload = function() {
 	    }
 	});
 	socket.on('locationDeath', function (data) {
+		console.log(data);
 		var roundedxdata = Math.round(data[0]/2);
 		var roundedydata = Math.round(data[1]/2);
 		var newcircle = { x: roundedxdata, y: roundedydata, r: 5 };
 		deathlocGraph.data.datasets[0].data.push(newcircle);
-		console.log(newcircle);
+		
 		deathlocGraph.update();
 		//data[1]/20
 	});
@@ -137,7 +138,7 @@ window.onload = function() {
 		// var distancetobargraph = (Math.max(0, Math.round((data[1]/2))-1));
 			//distanceGraph.data.datasets[0].data.splice(0,1);
 		if (distance[1] > 0) {
-			console.log(distance[1]);
+			// console.log(distance[1]);
 			var distancetobargraph = (Math.max(0, Math.round((distance[1]/2))));
 
 			distanceGraph.data.datasets[0].data[distancetobargraph] += 1;
