@@ -83,8 +83,8 @@ window.onload = function() {
 	});
 	socket.on('locationDeath', function (data) {
 		console.log(data);
-		var roundedxdata = Math.round(data[0]/2);
-		var roundedydata = Math.round(data[1]/2);
+		var roundedxdata = Math.round(data[0][0]/20);
+		var roundedydata = Math.round(data[0][1]/20);
 		var newcircle = { x: roundedxdata, y: roundedydata, r: 5 };
 		deathlocGraph.data.datasets[0].data.push(newcircle);
 		
