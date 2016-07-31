@@ -3,7 +3,7 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var socket = io("/", { multiplex: false });
-var tickRate = 1000/60; // Tickrate is 3 milliseconds
+var tickRate = 1000/60; //Tickrate is 3 milliseconds
 
 var players = [];
 var playerCount = 0;
@@ -118,10 +118,13 @@ function updatePositions(playerPositions) {
 	for (var i = 0; i < playerPositions.length; i++) {
 		for (var j = 0; j < players.length; j++) {
 			if (playerPositions[i].id == players[j].id) {
-				players[j].sprite.position.x = playerPositions[i].x;
-				players[j].sprite.position.y = playerPositions[i].y;
-				players[j].sprite.body.velocity.x = playerPositions[i].xVelocity; 
-        		players[j].sprite.body.velocity.y = playerPositions[i].yVelocity;
+				if (players[j].id != me.id) {
+					players[j].sprite.position.x = playerPositions[i].x;
+					players[j].sprite.position.y = playerPositions[i].y;
+
+					players[j].sprite.body.velocity.x = playerPositions[i].xVelocity; 
+        			players[j].sprite.body.velocity.y = playerPositions[i].yVelocity;
+        		}
 				break;
 			}
 		}
