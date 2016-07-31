@@ -96,6 +96,12 @@ setInterval(function() {
 			alivePlayers -= dead.length;
 
 			var deadPositions = [];
+
+			for (i = 0; i < dead.length; i++) {
+				deadPositions.push([dead[i].x, dead[i].y]);
+				io.emit('travelledDistance', travelledDistances[player.id]);
+			}
+
 			dead.forEach(function(player) {
 				deadPositions.push([Math.abs(player.x), Math.abs(player.y)]);
 				io.emit('travelledDistance', travelledDistances[player.id]);
