@@ -23,6 +23,8 @@ var previousPositions = {};
 var deathZones = [];
 var dangerZones = [];
 
+var travelledDistances = {};
+
 // Constants
 var PLAYER_SIZE = 75;
 var TILE_SIZE = 200;
@@ -51,6 +53,11 @@ setInterval(function() {
 				previousPositions[id][1],
 				players[id].y);
 			distances.push([id, distance]);
+
+			if (travelledDistances[id] == null)
+				travelledDistances[id] = 0;
+
+			travelledDistances[id] += distance;
 		}
 		previousPositions[id] = [players[id].x, players[id].y];
 
@@ -91,6 +98,7 @@ setInterval(function() {
 			var deadPositions = [];
 			dead.forEach(function(player) {
 				deadPositions.push([Math.abs(player.x), Math.abs(player.y)]);
+				io.emit('travelledDistance', travelledDistances[player.id]);
 			});
 
 			io.emit('deathsInLastSec', dead.length);
