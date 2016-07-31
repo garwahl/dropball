@@ -81,20 +81,12 @@ window.onload = function() {
 	        }
 	    }
 	});
-	socket.on('random', function (data) {
-		var roundeddata = Math.round(data/2);
-		if (deathlocGraph.data.datasets[0].data.x == data[0] && deathlocGraph.data.datasets[0].data.y == data[0] &&deathlocGraph.data.datasets[0].data.r <= 0 )
-		{
-			var oldradius = deathlocGraph.data.datasets[0].data.r;
-			var biggercircle = { x: roundeddata, y: roundeddata, r: oldradius + 3 }// Replace radius of that coordinate with r + 2
-			deathlocGraph.data.datasets[0].data.push(biggercircle);
-		}
-		else
-		{
-			var newcircle = { x: roundeddata, y: roundeddata, r: 3 };
-			deathlocGraph.data.datasets[0].data.push(newcircle);
-			console.log(newcircle);
-		}
+	socket.on('locationDeath', function (data) {
+		var roundedxdata = Math.round(data[0]/2);
+		var roundedydata = Math.round(data[1]/2);
+		var newcircle = { x: roundedxdata, y: roundedydata, r: 5 };
+		deathlocGraph.data.datasets[0].data.push(newcircle);
+		console.log(newcircle);
 		deathlocGraph.update();
 		//data[1]/20
 	});
