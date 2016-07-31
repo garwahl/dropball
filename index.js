@@ -88,7 +88,13 @@ setInterval(function() {
 			currentTimer = -1;
 			alivePlayers -= dead.length;
 
+			var deadPositions = [];
+			dead.forEach(function(player) {
+				deadPositions.push([Math.abs(player.x), Math.abs(player.y)]);
+			});
+
 			io.emit('deathsInLastSec', dead.length);
+			io.emit('locationDeath', deadPositions);
 		}
 		else {
 			var colours = ['yellow', 'black'];
