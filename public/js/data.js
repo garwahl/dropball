@@ -53,9 +53,19 @@ window.onload = function() {
 	            label: 'Death Location',
 	            data: [
 	                {
-	                    x: 2,
-	                    y: 1.5,
-	                    r: 0,
+	                    x: 0,
+	                    y: 0,
+	                    r: -1,
+	                },
+	                {
+	                	x: 4,
+	                	y: 3,
+	                	r: -1,
+	                },
+	                {
+	                	x: 2,
+	                	y: 2,
+	                	r: 4,
 	                }
 	            ],
 	            backgroundColor:"#FF6384",
@@ -69,17 +79,25 @@ window.onload = function() {
 	                borderColor: 'rgb(0, 0, 0)'
 	            }
 	        }
-	        // scales: {
-         //        yAxes: [{
-         //            ticks: {
-         //                min: 0,
-         //                beginAtZero: true
-         //            }
-         //        }]
-         //    }
-	    },
+	    }
 	});
-	
+	socket.on('random', function (data) {
+		var roundeddata = Math.round(data/2);
+		if (deathlocGraph.data.datasets[0].data.x == data[0] && deathlocGraph.data.datasets[0].data.y == data[0] &&deathlocGraph.data.datasets[0].data.r <= 0 )
+		{
+			var oldradius = deathlocGraph.data.datasets[0].data.r;
+			var biggercircle = { x: roundeddata, y: roundeddata, r: oldradius + 3 }// Replace radius of that coordinate with r + 2
+			deathlocGraph.data.datasets[0].data.push(biggercircle);
+		}
+		else
+		{
+			var newcircle = { x: roundeddata, y: roundeddata, r: 3 };
+			deathlocGraph.data.datasets[0].data.push(newcircle);
+			console.log(newcircle);
+		}
+		deathlocGraph.update();
+		//data[1]/20
+	});
 	// Distance Travelled Graph
 	var distanceGraphCanvas = document.getElementById("distanceGraph");
 	var distanceGraph = new Chart(distanceGraphCanvas, {
